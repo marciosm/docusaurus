@@ -1,0 +1,279 @@
+openapi: 3.0.2
+info:
+  title: Onboarding
+  version: 1.0.0
+servers:
+  - url: https://api.magalu.com
+    description: Default server
+components:
+  schemas:
+    BadGatewayErrorResponse:
+      properties:
+        message:
+          default: Bad Gateway
+          title: Message
+          type: string
+        slug:
+          default: BAD_GATEWAY
+          title: Slug
+          type: string
+      title: BadGatewayErrorResponse
+      type: object
+    ErrorLocationType:
+      description: An enumeration.
+      enum:
+      - header
+      - path
+      - body
+      - query
+      title: ErrorLocationType
+      type: string
+    FieldError:
+      properties:
+        field:
+          description: Error field
+          title: Field
+          type: string
+        location:
+          allOf:
+          - $ref: '#/components/schemas/ErrorLocationType'
+          description: Error location
+        message:
+          description: Error message
+          title: Message
+          type: string
+        slug:
+          description: Error slug found in the field
+          title: Slug
+          type: string
+      required:
+      - message
+      - location
+      - field
+      title: FieldError
+      type: object
+    ForbiddenErrorResponse:
+      properties:
+        message:
+          default: Forbidden
+          title: Message
+          type: string
+        slug:
+          default: FORBIDDEN
+          title: Slug
+          type: string
+      title: ForbiddenErrorResponse
+      type: object
+    GatewayTimeoutErrorResponse:
+      properties:
+        message:
+          default: Gateway Timeout
+          title: Message
+          type: string
+        slug:
+          default: GATEWAY_TIMEOUT
+          title: Slug
+          type: string
+      title: GatewayTimeoutErrorResponse
+      type: object
+    HealthCheckResponse:
+      properties:
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      title: HealthCheckResponse
+      type: object
+    InternalServerErrorResponse:
+      properties:
+        message:
+          default: Internal Server Error
+          title: Message
+          type: string
+        slug:
+          default: INTERNAL_SERVER_ERROR
+          title: Slug
+          type: string
+      title: InternalServerErrorResponse
+      type: object
+    ServiceUnavailableErrorResponse:
+      properties:
+        message:
+          default: Service Unavailable
+          title: Message
+          type: string
+        slug:
+          default: SERVICE_UNAVAILABLE
+          title: Slug
+          type: string
+      title: ServiceUnavailableErrorResponse
+      type: object
+    SignUpIn:
+      properties:
+        filter_by:
+          default: {}
+          description: If a filter syntax is provided, subscribers will only receive
+            messages that match the filter
+          example:
+            and:
+            - eq:
+              - store
+              - example_corp
+            - neq:
+              - event
+              - order_cancelled
+            - in:
+              - customer_interests
+              - - rugby
+                - football
+                - baseball
+            - or:
+              - gte:
+                - price_usd
+                - 100
+              - lte:
+                - price_usd
+                - 0
+          title: Filter
+          type: object
+        topic_id:
+          description: Topic identification
+          example: sac_ticket
+          title: Topic Id
+          type: string
+        webhook:
+          description: Webhook URL that will receive the notifications
+          example: https://some.url.com/webhooks
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Webhook
+          type: string
+      required:
+      - webhook
+      title: SignUpIn
+      type: object
+    SignUpOut:
+      example:
+        create: OK
+        webhook: OK
+      properties:
+        create:
+          default: OK
+          title: Create
+          type: string
+        webhook:
+          default: OK
+          title: Webhook
+          type: string
+      title: SignUpOut
+      type: object
+    UnauthorizedErrorResponse:
+      properties:
+        message:
+          default: Unauthorized
+          title: Message
+          type: string
+        slug:
+          default: UNAUTHORIZED
+          title: Slug
+          type: string
+      title: UnauthorizedErrorResponse
+      type: object
+    UnprocessableEntityErrorResponse:
+      properties:
+        details:
+          default:
+          - field: condition
+            location: body
+            message: Invalid condition type
+            slug: INVALID_PARAMETER_VALUE
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Unprocessable entity
+          title: Message
+          type: string
+        slug:
+          default: UNPROCESSABLE_ENTITY
+          title: Slug
+          type: string
+      title: UnprocessableEntityErrorResponse
+      type: object
+  securitySchemes:
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /v0/onboarding/signup:
+    put:
+      summary: "Configurar integra\xE7\xE3o"
+      tags:
+      - Onboarding
+      description: "Configura incri\xE7\xF5es para envio de webhooks."
+      operationId: onboarding_v0_put_signup
+      security:
+      - bearerHttpAuthentication: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpIn'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignUpOut'
+          description: Successful Response
+        '400':
+          description: Bad request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayErrorResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutErrorResponse'
+          description: Gateway Timeout
+

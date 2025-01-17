@@ -1,0 +1,326 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@font-face {
+  font-family: 'magalu-font';
+  src: 
+      url('fonts/MagaluUIText-Regular.ttf')
+      format('truetype')
+  ;
+}
+
+@font-face {
+  font-family: 'magalu-font-bold';
+  src: 
+      url('fonts/MagaluUIText-Bold.ttf')
+      format('truetype')
+  ;
+}
+
+:root {
+  --ifm-color-primary: #0086ff;
+  --ifm-color-primary-dark: #0079e6;
+  --ifm-color-primary-darker: #0072d9;
+  --ifm-color-primary-darkest: #005eb3;
+  --ifm-color-primary-light: #1a92ff;
+  --ifm-color-primary-lighter: #2698ff;
+  --ifm-color-primary-lightest: #4daaff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-heading-font-family: 'magalu-font-bold';
+  --ifm-font-family-monospace: 'magalu-font';
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #0086ff;
+  --ifm-color-primary-dark: #0079e6;
+  --ifm-color-primary-darker: #0072d9;
+  --ifm-color-primary-darkest: #005eb3;
+  --ifm-color-primary-light: #1a92ff;
+  --ifm-color-primary-lighter: #2698ff;
+  --ifm-color-primary-lightest: #4daaff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar Method labels */
+.api-method>.menu__link {
+  align-items: center;
+  justify-content: start;
+}
+
+.api-method>.menu__link::before {
+  width: 50px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  border: 1px solid;
+  margin-right: var(--ifm-spacing-horizontal);
+  text-align: center;
+  flex-shrink: 0;
+  border-color: transparent;
+  color: white;
+}
+
+.get>.menu__link::before {
+  content: "get";
+  background-color: var(--ifm-color-primary);
+}
+
+.put>.menu__link::before {
+  content: "put";
+  background-color: var(--openapi-code-blue);
+}
+
+.post>.menu__link::before {
+  content: "post";
+  background-color: var(--openapi-code-green);
+}
+
+.delete>.menu__link::before {
+  content: "del";
+  background-color: var(--openapi-code-red);
+}
+
+.patch>.menu__link::before {
+  content: "patch";
+  background-color: var(--openapi-code-orange);
+}
+
+nav[aria-label="Docs sidebar"] {
+  margin-top: 25px;
+  margin-right: 10px;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.theme-doc-sidebar-menu .menu__list-item {
+  margin-bottom: 10px;
+}
+
+.menu__list {
+  margin-left: 12px;
+}
+
+.menu__link.menu__link--active {
+  background: none;
+  font-size: 16px !important;
+}
+
+.menu__link {
+  font-size: 16px !important;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.menu__link.menu__link--sublist {
+  font-size: 16px !important;
+  font-style: normal;
+  font-weight: 600;
+}
+
+ul li::marker {
+  color: #0086FF;
+  font-size: 22px;
+}
+
+h1 {
+  font-size: 40px !important;
+  text-align: left !important;
+}
+
+h2 {
+  font-size: 26px !important;
+}
+
+h3 {
+  font-size: 20px !important;
+}
+
+.navbar {
+  height: 70px;
+}
+
+.navbar__logo {
+  margin-left: 50px;
+  margin-right: 60px;
+}
+
+@media (max-width: 996px) {
+  .navbar__logo {
+    margin-left: 10px;
+  }
+}
+
+.navbar__link {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  margin-right: 10px;
+  margin-right: 15px;
+}
+
+.navbar__link:after {
+  left: 5px;
+}
+
+.dropdown__link {
+  font-size: 16px !important;
+}
+
+.navbar__item.navbar__link[href="https://portal.magalu.cloud"] {
+  background-color: #0086FF;
+  color: white;
+  padding: 8px 32px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.navbar__items a[href="https://portal.magalu.cloud"] svg,
+.footer__item a.footer__link-item[href="https://portal.magalu.cloud"] svg,
+.navbar__items a[href="https://help.magalu.cloud"] svg,
+.footer__item a.footer__link-item[href="https://help.magalu.cloud"] svg {
+  display: none !important;
+}
+
+.navbar__items.navbar__items--right {
+  gap: 10px;
+}
+
+.menu__link svg {
+  display: none;
+}
+
+
+.footer {
+  padding: 0;
+  background-color: #ffffff;
+  border-top: 1px solid;
+  border-color: #CECFD1;
+}
+
+[data-theme='dark'] .footer {
+  background-color: rgba(0, 0, 0, 0.1)
+}
+
+.container.container-fluid {
+  margin-top: 0;
+}
+
+.row.footer__links {
+  margin-bottom: 0.5rem;
+}
+
+.footer__title {
+  padding: 0;
+  margin: 0.5rem;
+}
+
+.footer__items.clean-list {
+  gap: 20px;
+  font-size: 16px !important;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer__items.clean-list {
+    display: flex;
+    justify-content: center;
+
+  }
+}
+
+@media (max-width: 767px) {
+  .footer__item a.footer__link-item[href="#"] {
+    display: none;
+  }
+}
+
+@media (max-width: 996px) {
+  .footer__col {
+    margin-bottom: 0px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer__items.clean-list {
+    text-align: center;
+  }
+
+  .footer__items.clean-list>* {
+    margin: 4px 0;
+  }
+}
+
+.footer__link-item {
+  color: #282B2F;
+}
+
+
+[data-theme='dark'] .footer__link-item {
+  color: #FFFFFF;
+}
+
+
+[data-theme='dark'] .footer__link-item:hover {
+  color: #0086FF;
+}
+
+.footer__link-item:hover {
+  text-decoration: none;
+}
+
+.footer__item a.footer__link-item[href="#"]:hover {
+  color: inherit;
+  text-decoration: none;
+  cursor: default;
+}
+
+.menu__link--sublist.menu__link--sublist-caret::after,
+.clean-btn.menu__caret::before {
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  content: '';
+}
+
+
+.dropdown__menu li {
+  margin: 8px 0;
+  font-weight: 400;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0px;
+}
+
+.dropdown__menu li a.dropdown__link--active {
+  background-color: transparent;
+  color: #282B2F;
+}
+
+[data-theme='dark'] .dropdown__menu li a.dropdown__link--active {
+  color: #FFFFFF;
+}
+
+.dropdown__menu li a.dropdown__link:hover {
+  background-color: transparent;
+  color: #0086FF;
+}
+
+.table-of-contents.table-of-contents__left-border {
+  font-size: 14px !important;
+}
+

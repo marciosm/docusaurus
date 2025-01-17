@@ -1,0 +1,2163 @@
+openapi: 3.0.2
+info:
+  title: Customer Service API
+  version: 1.0.0
+servers:
+  - url: https://api.magalu.com
+    description: Default server
+  - url: https://api-sandbox.magalu.com
+    description: Sandbox server
+components:
+  schemas:
+    AllTicketCancellationReason:
+      enum:
+      - price_discrepancy
+      - incorrect_product
+      - duplicated_order
+      - payment_issue
+      - unavailability
+      - chargeback
+      - shipping_delay
+      - delivery_delay
+      - damaged_parts
+      - missing_parts
+      - defective_product
+      - shipped_but_lost
+      - held_at_customs
+      - better_price
+      - freight_discrepancy
+      - not_received
+      - shipping_address_issues
+      - quality_concern
+      - change_of_mind
+      - customer_error
+      - unexpected_circumstances
+      - missing_damaged_parts
+      title: AllTicketCancellationReason
+      type: string
+    AllTicketType:
+      enum:
+      - shipping
+      - cancellation
+      - payment
+      - general
+      - exchange
+      - product_question
+      - feedback
+      - shipping_notification
+      title: AllTicketType
+      type: string
+    Attachment:
+      properties:
+        file_extension:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentExtension'
+          description: "Extens\xE3o do arquivo"
+        file_name:
+          description: Nome do arquivo
+          title: File Name
+          type: string
+        file_path:
+          description: "Caminho do arquivo sem o diret\xF3rio raiz"
+          title: File Path
+          type: string
+        file_size:
+          anyOf:
+          - exclusiveMaximum: 5242880.0
+            exclusiveMinimum: 0.0
+            type: integer
+          - type: 'null'
+          description: Tamanho do arquivo em bytes
+          title: File Size
+        file_type:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentType'
+          description: Tipo MIME do arquivo
+        id:
+          description: ID do Anexo
+          title: Id
+          type: string
+        provided_file_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Nome do arquivo informado pelo usu\xE1rio"
+          title: Provided File Name
+        signed_link:
+          anyOf:
+          - $ref: '#/components/schemas/SignedURL'
+          - type: 'null'
+          description: "Link assinado para acesso tempor\xE1rio ao arquivo"
+        uploaded_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: Data e hora do envio do arquivo
+          title: Uploaded At
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Link do arquivo ap\xF3s o upload"
+          title: Url
+      required:
+      - file_name
+      - file_extension
+      - file_type
+      - file_path
+      title: Attachment
+      type: object
+    AttachmentExtension:
+      enum:
+      - png
+      - jpe
+      - jpeg
+      - jpg
+      - gif
+      - pdf
+      - pdf
+      title: AttachmentExtension
+      type: string
+    AttachmentRequest:
+      properties:
+        file_extension:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentExtension'
+          description: "Extens\xE3o do arquivo"
+        file_name:
+          description: Nome do arquivo
+          title: File Name
+          type: string
+        file_type:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentType'
+          description: Tipo MIME do arquivo
+      required:
+      - file_name
+      - file_extension
+      - file_type
+      title: AttachmentRequest
+      type: object
+    AttachmentType:
+      enum:
+      - image/png
+      - image/jpe
+      - image/jpeg
+      - image/jpg
+      - image/gif
+      - image/vnd.ms-photo
+      - image/pdf
+      - application/pdf
+      title: AttachmentType
+      type: string
+    BaseChannelToSeller:
+      example:
+        id: fb3d0cae-ef77-49ac-9516-21b764e7dc36
+      properties:
+        id:
+          description: Tenant ID do Canal
+          title: Id
+          type: string
+      required:
+      - id
+      title: BaseChannelToSeller
+      type: object
+    CreateMessage:
+      properties:
+        attachments:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/AttachmentRequest'
+            maxItems: 5
+            minItems: 1
+            type: array
+          - type: 'null'
+          description: Lista de anexos a serem enviados
+          title: Attachments
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Campo para livre utiliza\xE7\xE3o pelo sistema do seller"
+          examples:
+          - msg-1
+          title: Code
+        destination:
+          allOf:
+          - $ref: '#/components/schemas/DestinationType'
+          description: "Tipo do destinat\xE1rio"
+        message:
+          description: Mensagem a ser enviada
+          examples:
+          - "O produto ser\xE1 entregue na pr\xF3xima semana."
+          maxLength: 3000
+          minLength: 0
+          title: Message
+          type: string
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/MessageOwner'
+          description: "Respons\xE1vel pelo envio da mensagem"
+      required:
+      - message
+      - owner
+      - destination
+      title: CreateMessage
+      type: object
+    CreateTicketEventSeller:
+      description: TicketEvent schema to receive creation requests from the Seller
+      properties:
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Campo para livre utiliza\xE7\xE3o pelo sistema do seller"
+          title: Code
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TicketEventType'
+          description: Texto do enum para o tipo do evento.
+      required:
+      - type
+      title: CreateTicketEventSeller
+      type: object
+    CreateTicketSeller:
+      properties:
+        order:
+          allOf:
+          - $ref: '#/components/schemas/Order-Input'
+          description: "Detalhamento dos itens para os quais o protocolo est\xE1 sendo\
+            \ aberto"
+        reason:
+          anyOf:
+          - $ref: '#/components/schemas/TicketCancellationReasonSeller'
+          - type: 'null'
+          description: Motivo de abertura do protocolo
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TicketTypeSeller'
+          description: "Tipo do ticket solicita\xE7\xE3o de cancelamento, pagamento,\
+            \ entrega, etc."
+      required:
+      - type
+      - order
+      title: CreateTicketSeller
+      type: object
+    Delivery-Input:
+      example:
+        id: 195a8e41-afcc-455b-907a-475137106f84
+        items:
+        - description: Livro infantil a Bela e a Fera com encartes em 3D.
+          external_sku: livro-seller-01
+          id: 63c54b4a-ea19-4c52-90a8-bd38cd1a3157
+          image: https://imagem.do.livro/foto.jpg
+          name: A Bela e a Fera em 3D
+          quantity: 1
+          sku: livro-01
+        seller:
+          id: c85be697-7b14-4460-a5c7-3e58b4a364f9
+          name: Lojinha de Livros Infantis
+      properties:
+        id:
+          description: "Identificador \xFAnico na plataforma"
+          title: Id
+          type: string
+        items:
+          description: "Itens que comp\xF5e o chamado"
+          items:
+            $ref: '#/components/schemas/Item-Input'
+          minItems: 1
+          title: Items
+          type: array
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller-Input'
+          description: "Informa\xE7\xF5es do seller que fez a venda"
+      required:
+      - id
+      - seller
+      - items
+      title: Delivery
+      type: object
+    Delivery-Output:
+      properties:
+        id:
+          description: "Identificador \xFAnico na plataforma"
+          title: Id
+          type: string
+        items:
+          description: "Itens que comp\xF5e o chamado"
+          items:
+            $ref: '#/components/schemas/Item-Output'
+          minItems: 1
+          title: Items
+          type: array
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller-Output'
+          description: "Informa\xE7\xF5es do seller que fez a venda"
+      required:
+      - id
+      - seller
+      title: Delivery
+      type: object
+    DestinationType:
+      enum:
+      - customer
+      - channel
+      - seller
+      title: DestinationType
+      type: string
+    ErrorDetail:
+      properties:
+        ctx:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Contexto do erro
+          title: Ctx
+        field:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Campo que gerou o erro
+          title: Field
+        location:
+          anyOf:
+          - $ref: '#/components/schemas/ErrorLocation'
+          - type: 'null'
+          description: "Descri\xE7\xE3o do erro"
+        message:
+          description: "Descri\xE7\xE3o do erro"
+          title: Message
+          type: string
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Identifica\xE7\xE3o do erro"
+          title: Slug
+      required:
+      - message
+      title: ErrorDetail
+      type: object
+    ErrorLocation:
+      enum:
+      - query
+      - path
+      - body
+      - header
+      type: string
+    ErrorResponse:
+      properties:
+        details:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ErrorDetail'
+            type: array
+          - type: 'null'
+          description: Detalhes do erro
+          title: Details
+        message:
+          description: "Descri\xE7\xE3o do erro"
+          title: Message
+          type: string
+        slug:
+          description: "Identifica\xE7\xE3o do erro"
+          title: Slug
+          type: string
+      required:
+      - slug
+      - message
+      - details
+      title: ErrorResponse
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    Item-Input:
+      example:
+        description: Livro infantil a Bela e a Fera com encartes em 3D.
+        external_sku: livro-seller-01
+        id: 63c54b4a-ea19-4c52-90a8-bd38cd1a3157
+        image: https://imagem.do.livro/foto.jpg
+        name: A Bela e a Fera em 3D
+        quantity: 1
+        sku: livro-01
+      properties:
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Descri\xE7\xE3o do produto"
+          title: Description
+        external_sku:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Identificador do SKU no sistema externo (integradora ou seller)
+          title: External Sku
+        id:
+          description: "Identificador \xFAnico na plataforma"
+          title: Id
+          type: string
+        image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Imagem principal do produto
+          title: Image
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Nome do produto
+          title: Name
+        quantity:
+          description: Quantidade de itens atrelados ao protocolo
+          exclusiveMinimum: 0.0
+          title: Quantity
+          type: integer
+        sku:
+          description: Identificador do SKU no sistema
+          title: Sku
+          type: string
+      required:
+      - id
+      - sku
+      - quantity
+      title: Item
+      type: object
+    Item-Output:
+      properties:
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Descri\xE7\xE3o do produto"
+          title: Description
+        external_sku:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Identificador do SKU no sistema externo (integradora ou seller)
+          title: External Sku
+        id:
+          description: "Identificador \xFAnico na plataforma"
+          title: Id
+          type: string
+        image:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Imagem principal do produto
+          title: Image
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Nome do produto
+          title: Name
+        quantity:
+          description: Quantidade de itens atrelados ao protocolo
+          title: Quantity
+          type: integer
+        sku:
+          description: Identificador do SKU no sistema
+          title: Sku
+          type: string
+      required:
+      - id
+      - sku
+      - quantity
+      title: Item
+      type: object
+    ListMeta:
+      properties:
+        links:
+          anyOf:
+          - $ref: '#/components/schemas/NavigationLinks'
+          - type: 'null'
+          description: Navigation metadata
+        page:
+          anyOf:
+          - $ref: '#/components/schemas/PageResponse'
+          - type: 'null'
+          description: Pagination metadata
+      title: ListMeta
+      type: object
+    ListResponse_SellerTicketReturnSchema_:
+      properties:
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - type: 'null'
+          description: Metadata of the response
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/SellerTicketReturnSchema'
+            type: array
+          - type: 'null'
+          description: The content of the response
+          title: Results
+      title: ListResponse[SellerTicketReturnSchema]
+      type: object
+    ListResponse_TicketEventToSeller_:
+      properties:
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - type: 'null'
+          description: Metadata of the response
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TicketEventToSeller'
+            type: array
+          - type: 'null'
+          description: The content of the response
+          title: Results
+      title: ListResponse[TicketEventToSeller]
+      type: object
+    ListResponse_TicketMessageToSeller_:
+      properties:
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - type: 'null'
+          description: Metadata of the response
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TicketMessageToSeller'
+            type: array
+          - type: 'null'
+          description: The content of the response
+          title: Results
+      title: ListResponse[TicketMessageToSeller]
+      type: object
+    ListResponse_TicketToSeller_:
+      properties:
+        meta:
+          anyOf:
+          - $ref: '#/components/schemas/ListMeta'
+          - type: 'null'
+          description: Metadata of the response
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TicketToSeller'
+            type: array
+          - type: 'null'
+          description: The content of the response
+          title: Results
+      title: ListResponse[TicketToSeller]
+      type: object
+    MessageOwner:
+      example:
+        code: LvDSO
+        name: John Doe
+      properties:
+        code:
+          description: Identificador no sistema externo (ERP do seller) para o autor
+            da resposta
+          title: Code
+          type: string
+        name:
+          description: "Nome do autor respons\xE1vel pela resposta"
+          title: Name
+          type: string
+      required:
+      - name
+      - code
+      title: MessageOwner
+      type: object
+    MessageSender:
+      example:
+        id: 14ce7de2-846d-4018-855e-02c7b115c6d0
+        name: "Jos\xE9 da Silva"
+        owner:
+          code: j.doe
+          name: John Doe
+        type: customer|channel|seller
+      properties:
+        id:
+          description: "Identificador \xFAnico do usu\xE1rio"
+          title: Id
+          type: string
+        name:
+          description: Nome completo
+          title: Name
+          type: string
+        owner:
+          anyOf:
+          - $ref: '#/components/schemas/MessageOwner'
+          - type: 'null'
+          description: "Respons\xE1vel pelo envio da mensagem"
+        type:
+          allOf:
+          - $ref: '#/components/schemas/SenderType'
+          description: Identifica se o envio foi do seller, cliente ou do canal
+      required:
+      - id
+      - name
+      - type
+      title: MessageSender
+      type: object
+    Moderation:
+      example:
+        block_rules:
+        - "Dados sens\xEDveis"
+        - "Termos pro\xEDbidos"
+        - etc.
+        id: '1122'
+        status: new
+        updated_at: '2024-03-07T14:51:59.432Z'
+      properties:
+        block_rules:
+          examples:
+          - "Dados sens\xEDveis"
+          - "Termos pro\xEDbidos"
+          - etc.
+          items:
+            type: string
+          title: Block Rules
+          type: array
+          uniqueItems: true
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "ID da modera\xE7\xE3o"
+          title: Id
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/ModerationStatus'
+          - type: 'null'
+          default: new
+          description: "Status da modera\xE7\xE3o da mensagem"
+        updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data/hora da \xFAltima atualiza\xE7\xE3o da modera\xE7\xE3\
+            o"
+          title: Updated At
+      title: Moderation
+      type: object
+    ModerationStatus:
+      enum:
+      - not-moderated
+      - approved
+      - rejected
+      - new
+      title: ModerationStatus
+      type: string
+    NavigationLinks:
+      properties:
+        next:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Link para pr\xF3xima p\xE1gina"
+          examples:
+          - ?_offset=20&_limit=10
+          title: Next
+        previous:
+          description: "Link para p\xE1gina anterior"
+          examples:
+          - ?_offset=0&_limit=10
+          title: Previous
+          type: string
+        self:
+          description: "Link para p\xE1gina atual"
+          examples:
+          - ?_offset=10&_limit=10
+          title: Self
+          type: string
+      required:
+      - previous
+      - self
+      - next
+      title: NavigationLinks
+      type: object
+    Order-Input:
+      example:
+        code: '987654'
+        delivery:
+          id: 195a8e41-afcc-455b-907a-475137106f84
+          items:
+          - description: Livro infantil a Bela e a Fera com encartes em 3D.
+            external_sku: livro-seller-01
+            id: 63c54b4a-ea19-4c52-90a8-bd38cd1a3157
+            image: https://imagem.do.livro/foto.jpg
+            name: A Bela e a Fera em 3D
+            quantity: 1
+            sku: livro-01
+          seller:
+            id: c85be697-7b14-4460-a5c7-3e58b4a364f9
+            name: Lojinha de Livros Infantis
+        id: 195a8e41-afcc-455b-907a-475137106f84
+      properties:
+        code:
+          description: "C\xF3digo do pedido"
+          title: Code
+          type: string
+        delivery:
+          allOf:
+          - $ref: '#/components/schemas/Delivery-Input'
+          description: "Detalhamento dos itens que far\xE3o parte da solicita\xE7\xE3\
+            o"
+        id:
+          description: "Identificador \xFAnico do pedido na plataforma"
+          title: Id
+          type: string
+      required:
+      - id
+      - code
+      - delivery
+      title: Order
+      type: object
+    Order-Output:
+      example:
+        code: 1234-1234-1234-1234
+        id: '1234'
+      properties:
+        code:
+          description: "C\xF3digo do pedido"
+          title: Code
+          type: string
+        delivery:
+          allOf:
+          - $ref: '#/components/schemas/Delivery-Output'
+          description: "Detalhamento dos itens que far\xE3o parte da solicita\xE7\xE3\
+            o"
+        id:
+          description: "Identificador \xFAnico do pedido na plataforma"
+          title: Id
+          type: string
+      required:
+      - id
+      - code
+      - delivery
+      title: Order
+      type: object
+    PageResponse:
+      properties:
+        count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 0
+          description: "Quantidade de registros que foi retornada nessa p\xE1gina."
+          title: Count
+        limit:
+          anyOf:
+          - maximum: 100.0
+            minimum: 1.0
+            type: integer
+          - type: 'null'
+          default: 50
+          description: "Retorna a quantidade espec\xEDfica de registros se houver."
+          title: Limit
+        max_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 100
+          description: "Refere-se ao valor m\xE1ximo que pode ser utilizado no campo\
+            \ limit."
+          title: Max Limit
+        offset:
+          anyOf:
+          - minimum: 0.0
+            type: integer
+          - type: 'null'
+          default: 0
+          description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele\
+            \ ser\xE3o retornados os pr\xF3ximos N registros."
+          title: Offset
+      title: PageResponse
+      type: object
+    PrimaryKey:
+      anyOf:
+      - type: string
+      - type: integer
+    Seller-Input:
+      example:
+        id: e83ed3c7-7bae-47c4-9dcd-d12f6329fe1a
+        name: Lojinha de Livros Infantis
+      properties:
+        id:
+          description: Tenant id do Seller no Id Magalu
+          title: Id
+          type: string
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Nome do Seller ou da Loja
+          title: Name
+      required:
+      - id
+      title: Seller
+      type: object
+    Seller-Output:
+      properties:
+        id:
+          description: Tenant id do Seller no Id Magalu
+          title: Id
+          type: string
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Nome do Seller ou da Loja
+          title: Name
+      required:
+      - id
+      title: Seller
+      type: object
+    SellerTicketReturnSchema:
+      properties:
+        created_at:
+          description: "Data de cria\xE7\xE3o"
+          format: date-time
+          title: Created At
+          type: string
+        id:
+          description: "Chave prim\xE1ria"
+          title: Id
+          type: string
+        reverse_code:
+          description: "C\xF3digo de remessa reversa"
+          title: Reverse Code
+          type: string
+        ticket_id:
+          description: Ticket ID relacionado
+          title: Ticket Id
+          type: string
+        updated_at:
+          description: "Data de atualiza\xE7\xE3o"
+          format: date-time
+          title: Updated At
+          type: string
+      required:
+      - id
+      - ticket_id
+      - reverse_code
+      title: SellerTicketReturnSchema
+      type: object
+    SellerTransactionSchema:
+      properties:
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "C\xF3digo da transa\xE7\xE3o"
+          title: Code
+        content_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Identificador do modelo
+          title: Content Id
+        content_type:
+          description: Tipo do modelo
+          title: Content Type
+          type: string
+        created_at:
+          description: "Data e hora da cria\xE7\xE3o"
+          format: date-time
+          title: Created At
+          type: string
+        events:
+          description: "Eventos da transa\xE7\xE3o"
+          items:
+            $ref: '#/components/schemas/TransactionEventSchema'
+          title: Events
+          type: array
+        id:
+          description: "Identificador da transa\xE7\xE3o"
+          title: Id
+          type: string
+        operation:
+          allOf:
+          - $ref: '#/components/schemas/TransactionOperation'
+          description: "Opera\xE7\xE3o da transa\xE7\xE3o"
+        status:
+          $ref: '#/components/schemas/TransactionEventStatus'
+        updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da atualiza\xE7\xE3o"
+          title: Updated At
+      required:
+      - id
+      - operation
+      - content_type
+      - status
+      title: SellerTransactionSchema
+      type: object
+    SenderType:
+      enum:
+      - customer
+      - channel
+      - seller
+      title: SenderType
+      type: string
+    SignedURL:
+      properties:
+        content_type:
+          title: Content Type
+          type: string
+        expired:
+          readOnly: true
+          title: Expired
+          type: boolean
+        expires_at:
+          format: date-time
+          title: Expires At
+          type: string
+        headers:
+          readOnly: true
+          title: Headers
+          type: object
+        max_size:
+          description: "Tamanho m\xE1ximo do arquivo em bytes"
+          title: Max Size
+          type: integer
+        method:
+          $ref: '#/components/schemas/SignedURLMethod'
+        url:
+          title: Url
+          type: string
+      required:
+      - url
+      - content_type
+      - method
+      - expires_at
+      - max_size
+      - expired
+      - headers
+      title: SignedURL
+      type: object
+    SignedURLMethod:
+      const: PUT
+      enum:
+      - PUT
+      title: SignedURLMethod
+      type: string
+    TicketCancellationReasonSeller:
+      enum:
+      - missing_parts
+      - damaged_parts
+      - price_discrepancy
+      - freight_discrepancy
+      - shipping_address_issues
+      - shipped_but_lost
+      - held_at_customs
+      - shipping_delay
+      - unavailability
+      title: TicketCancellationReasonSeller
+      type: string
+    TicketEventToSeller:
+      description: TicketEvent Schema to be returned to the seller
+      properties:
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Campo para livre utiliza\xE7\xE3o pelo sistema do seller"
+          title: Code
+        created_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da cria\xE7\xE3o"
+          examples:
+          - '2024-03-07T14:51:59.432Z'
+          title: Created At
+        created_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Usu\xE1rio que criou o registro"
+          examples:
+          - fb3d0cae-ef77-49ac-9516-21b764e7dc36
+          title: Created By
+        id:
+          description: "Identificador \xFAnico da mensagem"
+          examples:
+          - fb3d0cae-ef77-49ac-9516-21b764e7dc36
+          format: uuid4
+          title: Id
+          type: string
+        ticket_id:
+          description: UUID do ticket ao qual o evento pertence
+          title: Ticket Id
+          type: string
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TicketEventType'
+          description: Texto do enum para o tipo do evento.
+        updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da atualiza\xE7\xE3o"
+          examples:
+          - '2024-03-07T14:51:59.432Z'
+          title: Updated At
+        updated_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Usu\xE1rio que criou o atualizou"
+          examples:
+          - fb3d0cae-ef77-49ac-9516-21b764e7dc36
+          title: Updated By
+      required:
+      - type
+      - ticket_id
+      title: TicketEventToSeller
+      type: object
+    TicketEventType:
+      enum:
+      - product_sent
+      - return_info_sent
+      - authorize_refund
+      - product_received
+      - exchange_product_received
+      - refunded
+      - added_bank_account
+      - sla_waiting_customer_expired
+      - rejection_reason
+      - valid_bank_account
+      - waiting_seller_pickup
+      - seller_already_pickedup
+      - waiting_pickup_schedule
+      - sensitive_data_identified
+      - sensitive_data_saved
+      - return_invoice
+      - cancel_invoice
+      - delivery
+      - withdrawn_product
+      - waiting_picked_up
+      - validating_return_invoice
+      - waiting_refund_release
+      title: TicketEventType
+      type: string
+    TicketMessageToSeller:
+      properties:
+        attachments:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Attachment'
+            type: array
+          - type: 'null'
+          description: Lista de anexos
+          title: Attachments
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Campo para livre utiliza\xE7\xE3o pelo sistema do seller"
+          examples:
+          - msg-1
+          title: Code
+        created_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da cria\xE7\xE3o"
+          examples:
+          - '2024-03-07T14:51:59.432Z'
+          title: Created At
+        destination:
+          allOf:
+          - $ref: '#/components/schemas/DestinationType'
+          description: "Tipo do destinat\xE1rio"
+        id:
+          description: "Identificador \xFAnico da mensagem"
+          examples:
+          - fb3d0cae-ef77-49ac-9516-21b764e7dc36
+          title: Id
+          type: string
+        message:
+          description: Mensagem a ser enviada
+          examples:
+          - "O produto ser\xE1 entregue na pr\xF3xima semana."
+          maxLength: 3000
+          minLength: 0
+          title: Message
+          type: string
+        moderation:
+          allOf:
+          - $ref: '#/components/schemas/Moderation'
+          default:
+            block_rules: []
+            status: new
+            updated_at: '2024-12-31T15:30:13.545161Z'
+          description: "Modera\xE7\xE3o da mensagem"
+        sender:
+          allOf:
+          - $ref: '#/components/schemas/MessageSender'
+          description: Remetente
+        ticket:
+          allOf:
+          - $ref: '#/components/schemas/TicketSummary'
+          description: Ticket ao qual a mensagem pertence
+      required:
+      - message
+      - ticket
+      - sender
+      - destination
+      title: TicketMessageToSeller
+      type: object
+    TicketOrigin:
+      enum:
+      - channel
+      - customer
+      - seller
+      title: TicketOrigin
+      type: string
+    TicketSummary:
+      properties:
+        id:
+          allOf:
+          - $ref: '#/components/schemas/PrimaryKey'
+          description: "Chave prim\xE1ria"
+      required:
+      - id
+      title: TicketSummary
+      type: object
+    TicketToSeller:
+      properties:
+        audit_created_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da cria\xE7\xE3o do registro"
+          title: Audit Created At
+        audit_updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da atualiza\xE7\xE3o do registro"
+          title: Audit Updated At
+        channel:
+          allOf:
+          - $ref: '#/components/schemas/BaseChannelToSeller'
+          description: Canal ao qual pertence o pedido
+        closed:
+          default: false
+          description: Indica se o protocolo foi fechado
+          title: Closed
+          type: boolean
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Campo para livre utiliza\xE7\xE3o pelo sistema do seller"
+          title: Code
+        created_at:
+          description: "Data e hora da cria\xE7\xE3o"
+          format: date-time
+          title: Created At
+          type: string
+        due_date:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: Data limite para a resposta
+          title: Due Date
+        id:
+          allOf:
+          - $ref: '#/components/schemas/PrimaryKey'
+          description: "Chave prim\xE1ria"
+        order:
+          allOf:
+          - $ref: '#/components/schemas/Order-Output'
+          description: "Detalhamento dos itens para os quais o protocolo est\xE1 sendo\
+            \ aberto"
+        origin:
+          allOf:
+          - $ref: '#/components/schemas/TicketOrigin'
+          description: "Origem de abertura do protocolo. Descoberto automaticamente\
+            \ de acordo com o perfil do usu\xE1rio"
+        protocol:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "C\xF3digo do protocolo"
+          title: Protocol
+        reason:
+          anyOf:
+          - $ref: '#/components/schemas/AllTicketCancellationReason'
+          - type: 'null'
+          description: Motivo de abertura do protocolo
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: open
+          description: Status do atendimento do protocolo
+          title: Status
+        type:
+          allOf:
+          - $ref: '#/components/schemas/AllTicketType'
+          description: "Tipo do ticket solicita\xE7\xE3o de cancelamento, pagamento,\
+            \ entrega, etc."
+        updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: "Data e hora da atualiza\xE7\xE3o"
+          title: Updated At
+      required:
+      - id
+      - type
+      - order
+      - channel
+      - origin
+      title: TicketToSeller
+      type: object
+    TicketTypeSeller:
+      enum:
+      - shipping
+      - cancellation
+      - payment
+      title: TicketTypeSeller
+      type: string
+    TransactionEventName:
+      enum:
+      - failure
+      - transition
+      - delay
+      - info
+      title: TransactionEventName
+      type: string
+    TransactionEventSchema:
+      example:
+        data:
+          key: value
+        event: info|failure|transition|delay
+        message: The event message
+        status: pending|processing|completed|failed|cancelled
+      properties:
+        created_at:
+          description: "Data e hora da cria\xE7\xE3o"
+          format: date-time
+          title: Created At
+          type: string
+        data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          description: Dados do evento
+          title: Data
+        event:
+          allOf:
+          - $ref: '#/components/schemas/TransactionEventName'
+          description: Nome do evento
+        message:
+          description: Mensagem do evento
+          title: Message
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TransactionEventStatus'
+          description: Status do event
+      required:
+      - event
+      - message
+      - status
+      title: TransactionEventSchema
+      type: object
+    TransactionEventStatus:
+      enum:
+      - pending
+      - processing
+      - completed
+      - failed
+      - cancelled
+      title: TransactionEventStatus
+      type: string
+    TransactionHATEAOS:
+      properties:
+        path:
+          description: "Link para a transa\xE7\xE3o"
+          title: Path
+          type: string
+      required:
+      - path
+      title: TransactionHATEAOS
+      type: object
+    TransactionOperation:
+      enum:
+      - create
+      - update
+      - delete
+      - process
+      - cancel
+      title: TransactionOperation
+      type: string
+    TransactionResponse:
+      properties:
+        data:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Data
+        links:
+          description: "Links para a transa\xE7\xE3o"
+          items:
+            $ref: '#/components/schemas/TransactionHATEAOS'
+          title: Links
+          type: array
+        transaction_id:
+          description: "ID da transa\xE7\xE3o"
+          format: uuid
+          title: Transaction Id
+          type: string
+      required:
+      - transaction_id
+      title: TransactionResponse
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+  securitySchemes:
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /seller/v0/tickets:
+    get:
+      operationId: sac_v0_seller_get_tickets
+      parameters:
+      - description: Determina a quantidade de registros a serem retornados.
+        in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 1
+            type: integer
+          - type: 'null'
+          default: 50
+          description: Determina a quantidade de registros a serem retornados.
+          title: ' Limit'
+      - description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele ser\xE3\
+          o retornados os pr\xF3ximos N registros."
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 0
+            type: integer
+          - type: 'null'
+          default: 0
+          description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele\
+            \ ser\xE3o retornados os pr\xF3ximos N registros."
+          title: ' Offset'
+      - description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+          \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+        in: query
+        name: _sort
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+            \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+          title: ' Sort'
+      - in: query
+        name: status
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - in: query
+        name: reason
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AllTicketCancellationReason'
+          - type: 'null'
+          title: Reason
+      - in: query
+        name: ticket_id
+        required: false
+        schema:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Ticket Id
+      - in: query
+        name: order__id
+        required: false
+        schema:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Order  Id
+      - in: query
+        name: order__code
+        required: false
+        schema:
+          anyOf:
+          - maxLength: 100
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Order  Code
+      - in: query
+        name: channel__alias
+        required: false
+        schema:
+          anyOf:
+          - maxLength: 100
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Channel  Alias
+      - in: query
+        name: protocol
+        required: false
+        schema:
+          anyOf:
+          - maxLength: 100
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Protocol
+      - in: query
+        name: created_at_gte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Gte
+      - in: query
+        name: created_at_lte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Lte
+      - in: query
+        name: updated_at_gte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Updated At Gte
+      - in: query
+        name: updated_at_lte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Updated At Lte
+      - in: query
+        name: due_date_lte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Due Date Lte
+      - in: query
+        name: due_date_gte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Due Date Gte
+      - in: query
+        name: code
+        required: false
+        schema:
+          anyOf:
+          - maxLength: 100
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Code
+      - in: query
+        name: type
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/AllTicketType'
+          - type: 'null'
+          title: Type
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse_TicketToSeller_'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Lista de tickets
+      tags:
+      - Tickets
+    post:
+      operationId: sac_v0_seller_create_ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketSeller'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Cria um ticket
+      tags:
+      - Tickets
+  /seller/v0/tickets/{ticket_id}:
+    get:
+      operationId: sac_v0_seller_get_ticket
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          format: uuid
+          title: Ticket Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketToSeller'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Busca ticket por ID
+      tags:
+      - Tickets
+  /seller/v0/tickets/{ticket_id}/events:
+    get:
+      operationId: sac_v0_seller_get_ticket_events
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      - description: Determina a quantidade de registros a serem retornados.
+        in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 1
+            type: integer
+          - type: 'null'
+          default: 50
+          description: Determina a quantidade de registros a serem retornados.
+          title: ' Limit'
+      - description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele ser\xE3\
+          o retornados os pr\xF3ximos N registros."
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 0
+            type: integer
+          - type: 'null'
+          default: 0
+          description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele\
+            \ ser\xE3o retornados os pr\xF3ximos N registros."
+          title: ' Offset'
+      - description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+          \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+        in: query
+        name: _sort
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+            \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+          title: ' Sort'
+      - in: query
+        name: type
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/TicketEventType'
+          - type: 'null'
+          title: Type
+      - in: query
+        name: created_at_gte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Gte
+      - in: query
+        name: created_at_lte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Lte
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse_TicketEventToSeller_'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Lista os eventos de um ticket
+      tags:
+      - Eventos
+    post:
+      operationId: sac_v0_seller_create_event
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketEventSeller'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Adiciona um evento ao ticket
+      tags:
+      - Eventos
+  /seller/v0/tickets/{ticket_id}/messages:
+    get:
+      operationId: sac_v0_seller_get_ticket_messages
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      - description: Determina a quantidade de registros a serem retornados.
+        in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 1
+            type: integer
+          - type: 'null'
+          default: 50
+          description: Determina a quantidade de registros a serem retornados.
+          title: ' Limit'
+      - description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele ser\xE3\
+          o retornados os pr\xF3ximos N registros."
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 0
+            type: integer
+          - type: 'null'
+          default: 0
+          description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele\
+            \ ser\xE3o retornados os pr\xF3ximos N registros."
+          title: ' Offset'
+      - description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+          \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+        in: query
+        name: _sort
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+            \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+          title: ' Sort'
+      - in: query
+        name: has_attachment
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Has Attachment
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse_TicketMessageToSeller_'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "Imposs\xEDvel de processar os dados"
+      security:
+      - bearerHttpAuthentication: []
+      summary: Lista as mensagens de um ticket
+      tags:
+      - Mensagens
+    post:
+      operationId: sac_v0_seller_create_ticket_message
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessage'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/TransactionResponse'
+                - $ref: '#/components/schemas/TicketMessageToSeller'
+                title: Response Sac V0 Seller Create Ticket Message
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Adiciona uma mensagem a um ticket
+      tags:
+      - Mensagens
+  /seller/v0/tickets/{ticket_id}/messages/{message_id}:
+    get:
+      operationId: sac_v0_seller_get_ticket_message
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      - in: path
+        name: message_id
+        required: true
+        schema:
+          title: Message Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketMessageToSeller'
+          description: Successful Response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "N\xE3o encontrado"
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "Imposs\xEDvel de processar os dados"
+      security:
+      - bearerHttpAuthentication: []
+      summary: Busca uma mensagem de um ticket por ID
+      tags:
+      - Mensagens
+  /seller/v0/tickets/{ticket_id}/messages/{message_id}/attachments/{file_name}:
+    get:
+      operationId: sac_v0_seller_get_ticket_message_attachment
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          title: Ticket Id
+          type: string
+      - in: path
+        name: message_id
+        required: true
+        schema:
+          title: Message Id
+          type: string
+      - in: path
+        name: file_name
+        required: true
+        schema:
+          title: File Name
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*': {}
+            application/json:
+              schema: {}
+          description: Anexo encontrado
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "Requisi\xE7\xE3o inv\xE1lida"
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "N\xE3o autorizado"
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "N\xE3o encontrado"
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Resgata o arquivo anexo a uma mensagem
+      tags:
+      - Mensagens
+  /seller/v0/tickets/{ticket_id}/returns:
+    get:
+      description: Resgata lista de remessas reversas de um ticket.
+      operationId: sac_v0_seller_get_ticket_return_list
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          format: uuid
+          title: Ticket Id
+          type: string
+      - description: Determina a quantidade de registros a serem retornados.
+        in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 1
+            type: integer
+          - type: 'null'
+          default: 50
+          description: Determina a quantidade de registros a serem retornados.
+          title: ' Limit'
+      - description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele ser\xE3\
+          o retornados os pr\xF3ximos N registros."
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - maximum: 100
+            minimum: 0
+            type: integer
+          - type: 'null'
+          default: 0
+          description: "Posi\xE7\xE3o do registro de refer\xEAncia, a partir dele\
+            \ ser\xE3o retornados os pr\xF3ximos N registros."
+          title: ' Offset'
+      - description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+          \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+        in: query
+        name: _sort
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: "Ordena pelo(s) campo(s). Use o sufixo :asc e :desc para ordena\xE7\
+            \xE3o ascendente e descendente, respectivamente. Ex: name:asc,email:desc."
+          title: ' Sort'
+      - in: query
+        name: reverse_code
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reverse Code
+      - in: query
+        name: created_at_gte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Gte
+      - in: query
+        name: created_at_lte
+        required: false
+        schema:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Created At Lte
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse_SellerTicketReturnSchema_'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Lista os remessas reversas de um ticket
+      tags:
+      - Remessa Reversa
+    post:
+      description: Solicita uma remessa reversa para um ticket.
+      operationId: sac_v0_seller_create_ticket_return
+      parameters:
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          format: uuid
+          title: Ticket Id
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+          description: Remessa reversa criada com sucesso
+        '404':
+          description: "Ticket n\xE3o encontrado"
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Solicita uma remessa reversa para um ticket.
+      tags:
+      - Remessa Reversa
+  /seller/v0/tickets/{ticket_id}/returns/{ticket_return_id}:
+    get:
+      description: Resgata uma remessa reversa de um ticket.
+      operationId: sac_v0_seller_get_ticket_return_item
+      parameters:
+      - in: path
+        name: ticket_return_id
+        required: true
+        schema:
+          format: uuid
+          title: Ticket Return Id
+          type: string
+      - in: path
+        name: ticket_id
+        required: true
+        schema:
+          format: uuid
+          title: Ticket Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerTicketReturnSchema'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - bearerHttpAuthentication: []
+      summary: Busca uma remessa reversa de um ticket por ID
+      tags:
+      - Remessa Reversa
+  /seller/v0/transactions/{transaction_id}:
+    get:
+      description: "Busca transa\xE7\xE3o de uma determinada opera\xE7\xE3o."
+      operationId: sac_v0_seller_get_transaction
+      parameters:
+      - in: path
+        name: transaction_id
+        required: true
+        schema:
+          format: uuid
+          title: Transaction Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerTransactionSchema'
+          description: Successful Response
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "N\xE3o encontrado"
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: "Imposs\xEDvel de processar os dados"
+      security:
+      - bearerHttpAuthentication: []
+      summary: "Busca uma transa\xE7\xE3o por ID"
+      tags:
+      - Transactions

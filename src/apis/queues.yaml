@@ -1,0 +1,401 @@
+openapi: 3.0.2
+info:
+  title: "Filas"
+  version: 1.0.0
+servers:
+  - url: https://api.magalu.com
+    description: Default server
+components:
+  schemas:
+    BadGatewayErrorResponse:
+      properties:
+        message:
+          default: Bad Gateway
+          title: Message
+          type: string
+        slug:
+          default: BAD_GATEWAY
+          title: Slug
+          type: string
+      title: BadGatewayErrorResponse
+      type: object
+    BadRequestErrorResponse:
+      properties:
+        details:
+          default:
+          - field: name
+            location: query
+            message: Invalid parameter
+            slug: INVALID_PARAMETER
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Bad Request
+          title: Message
+          type: string
+        slug:
+          default: BAD_REQUEST
+          title: Slug
+          type: string
+      title: BadRequestErrorResponse
+      type: object
+    ErrorLocationType:
+      description: An enumeration.
+      enum:
+      - header
+      - path
+      - body
+      - query
+      title: ErrorLocationType
+      type: string
+    FieldError:
+      properties:
+        field:
+          description: Error field
+          title: Field
+          type: string
+        location:
+          allOf:
+          - $ref: '#/components/schemas/ErrorLocationType'
+          description: Error location
+        message:
+          description: Error message
+          title: Message
+          type: string
+        slug:
+          description: Error slug found in the field
+          title: Slug
+          type: string
+      required:
+      - message
+      - location
+      - field
+      title: FieldError
+      type: object
+    ForbiddenErrorResponse:
+      properties:
+        message:
+          default: Forbidden
+          title: Message
+          type: string
+        slug:
+          default: FORBIDDEN
+          title: Slug
+          type: string
+      title: ForbiddenErrorResponse
+      type: object
+    GatewayTimeoutErrorResponse:
+      properties:
+        message:
+          default: Gateway Timeout
+          title: Message
+          type: string
+        slug:
+          default: GATEWAY_TIMEOUT
+          title: Slug
+          type: string
+      title: GatewayTimeoutErrorResponse
+      type: object
+    HistoryCollectionResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          items:
+            $ref: '#/components/schemas/HistoryOut'
+          title: Results
+          type: array
+      required:
+      - meta
+      - results
+      title: HistoryCollectionResponse
+      type: object
+    HistoryOut:
+      additionalProperties: false
+      properties:
+        body:
+          allOf:
+          - items:
+            - type: string
+            - {}
+            type: array
+          example:
+            foo: bar
+          title: Request body
+        created_at:
+          example: '2022-06-15T14:25:37Z'
+          format: date-time
+          title: Creation date
+          type: string
+        id:
+          example: 4d51bd31-0453-4286-8b4e-11b1bf0c9717
+          format: uuid4
+          title: Notification Id
+          type: string
+        request_id:
+          example: 77eac4d0-133c-42f5-a76d-de82da028ed3
+          format: uuid
+          title: Request Id
+          type: string
+        status_code:
+          example: 200
+          title: Request status code
+          type: integer
+        type:
+          example: xpto
+          title: Topic identifier
+          type: string
+      required:
+      - id
+      - created_at
+      - type
+      - body
+      - status_code
+      - request_id
+      title: HistoryOut
+      type: object
+    InternalServerErrorResponse:
+      properties:
+        message:
+          default: Internal Server Error
+          title: Message
+          type: string
+        slug:
+          default: INTERNAL_SERVER_ERROR
+          title: Slug
+          type: string
+      title: InternalServerErrorResponse
+      type: object
+    Meta:
+      properties:
+        links:
+          additionalProperties:
+            type: string
+          title: Links
+          type: object
+        page:
+          $ref: '#/components/schemas/Page'
+      required:
+      - page
+      - links
+      title: Meta
+      type: object
+    Page:
+      properties:
+        count:
+          minimum: 0.0
+          title: Count
+          type: integer
+        limit:
+          exclusiveMinimum: 0.0
+          title: Limit
+          type: integer
+        max_limit:
+          exclusiveMinimum: 0.0
+          title: Max Limit
+          type: integer
+        offset:
+          minimum: 0.0
+          title: Offset
+          type: integer
+      required:
+      - limit
+      - offset
+      - count
+      - max_limit
+      title: Page
+      type: object
+    ServiceUnavailableErrorResponse:
+      properties:
+        message:
+          default: Service Unavailable
+          title: Message
+          type: string
+        slug:
+          default: SERVICE_UNAVAILABLE
+          title: Slug
+          type: string
+      title: ServiceUnavailableErrorResponse
+      type: object
+    UnauthorizedErrorResponse:
+      properties:
+        message:
+          default: Unauthorized
+          title: Message
+          type: string
+        slug:
+          default: UNAUTHORIZED
+          title: Slug
+          type: string
+      title: UnauthorizedErrorResponse
+      type: object
+    UnprocessableEntityErrorResponse:
+      properties:
+        details:
+          default:
+          - field: condition
+            location: body
+            message: Invalid condition type
+            slug: INVALID_PARAMETER_VALUE
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Unprocessable entity
+          title: Message
+          type: string
+        slug:
+          default: UNPROCESSABLE_ENTITY
+          title: Slug
+          type: string
+      title: UnprocessableEntityErrorResponse
+      type: object
+  securitySchemes:
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /v0/queues/history:
+    get:
+      summary: "Listar hist\xF3rico"
+      tags:
+      - "Hist\xF3rico"
+      description: "Consulta o hist\xF3rico de envios de eventos.\n\n:::info\n\n \
+        \   Este endpoint implementa pagina\xE7\xE3o, ordena\xE7\xE3o e filtros. Para\
+        \ saber mais, consulte a [documenta\xE7\xE3o](/docs/development-guide/pagination-filtering-sorting).\n\
+        :::\n\n**Escopo requerido**\n\n| Valor | Descri\xE7\xE3o |\n|---|---|\n| `open:queue-history:read`\
+        \ | Permite listar o hist\xF3rico |"
+      operationId: queues_v0_get_history
+      security:
+      - bearerHttpAuthentication: []
+      parameters:
+      - in: query
+        name: _limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100.0
+          minimum: 0.0
+          title: ' Limit'
+          type: integer
+      - in: query
+        name: _offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0.0
+          title: ' Offset'
+          type: integer
+      - in: query
+        name: _sort
+        required: false
+        schema:
+          default:
+          - created_at:asc
+          items:
+            type: string
+          title: ' Sort'
+          type: array
+      - in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          title: ' Fields'
+          type: array
+      - in: query
+        name: type
+        required: false
+        schema:
+          title: Type
+          type: string
+      - in: query
+        name: id
+        required: false
+        schema:
+          format: uuid
+          title: Id
+          type: string
+      - in: query
+        name: request_id
+        required: false
+        schema:
+          format: uuid
+          title: Request Id
+          type: string
+      - in: query
+        name: created_at
+        required: false
+        schema:
+          format: date
+          title: Created At
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          format: uuid
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryCollectionResponse'
+          description: Successful Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayErrorResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutErrorResponse'
+          description: Gateway Timeout
+

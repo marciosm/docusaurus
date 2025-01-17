@@ -1,0 +1,641 @@
+openapi: 3.0.2
+info:
+  title: Traces
+  version: 1.0.0
+servers:
+  - url: https://api.magalu.com
+    description: Default server
+  - url: https://api-sandbox.magalu.com
+    description: Sandbox server
+components:
+  schemas:
+    BadGatewayErrorResponse:
+      properties:
+        message:
+          default: Bad Gateway
+          title: Message
+          type: string
+        slug:
+          default: BAD_GATEWAY
+          title: Slug
+          type: string
+      title: BadGatewayErrorResponse
+      type: object
+    BadRequestErrorResponse:
+      properties:
+        details:
+          default:
+          - field: name
+            location: query
+            message: Invalid parameter
+            slug: INVALID_PARAMETER
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Bad Request
+          title: Message
+          type: string
+        slug:
+          default: BAD_REQUEST
+          title: Slug
+          type: string
+      title: BadRequestErrorResponse
+      type: object
+    Channel:
+      additionalProperties: false
+      properties:
+        id:
+          format: uuid
+          title: Tenant Id
+          type: string
+      required:
+      - id
+      title: Channel
+      type: object
+    Context:
+      description: An enumeration.
+      enum:
+      - portfolios
+      title: Context
+      type: string
+    ErrorLocationType:
+      description: An enumeration.
+      enum:
+      - header
+      - path
+      - body
+      - query
+      title: ErrorLocationType
+      type: string
+    Extras:
+      properties: {}
+      title: Extras
+      type: object
+    FieldError:
+      properties:
+        field:
+          description: Error field
+          title: Field
+          type: string
+        location:
+          allOf:
+          - $ref: '#/components/schemas/ErrorLocationType'
+          description: Error location
+        message:
+          description: Error message
+          title: Message
+          type: string
+        slug:
+          description: Error slug found in the field
+          title: Slug
+          type: string
+      required:
+      - message
+      - location
+      - field
+      title: FieldError
+      type: object
+    ForbiddenErrorResponse:
+      properties:
+        message:
+          default: Forbidden
+          title: Message
+          type: string
+        slug:
+          default: FORBIDDEN
+          title: Slug
+          type: string
+      title: ForbiddenErrorResponse
+      type: object
+    GatewayTimeoutErrorResponse:
+      properties:
+        message:
+          default: Gateway Timeout
+          title: Message
+          type: string
+        slug:
+          default: GATEWAY_TIMEOUT
+          title: Slug
+          type: string
+      title: GatewayTimeoutErrorResponse
+      type: object
+    HealthCheckResponse:
+      properties:
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      title: HealthCheckResponse
+      type: object
+    InternalServerErrorResponse:
+      properties:
+        message:
+          default: Internal Server Error
+          title: Message
+          type: string
+        slug:
+          default: INTERNAL_SERVER_ERROR
+          title: Slug
+          type: string
+      title: InternalServerErrorResponse
+      type: object
+    Meta:
+      properties:
+        links:
+          additionalProperties:
+            type: string
+          title: Links
+          type: object
+        page:
+          $ref: '#/components/schemas/Page'
+      required:
+      - page
+      - links
+      title: Meta
+      type: object
+    Metadata:
+      properties: {}
+      title: Metadata
+      type: object
+    MinimalTraceOut:
+      additionalProperties: false
+      properties:
+        code:
+          example: ABC123
+          minLength: 1
+          title: The identifier of the processed object
+          type: string
+        created_at:
+          format: date-time
+          title: Creation date
+          type: string
+        id:
+          format: uuid4
+          title: Identifier id
+          type: string
+        message:
+          example: Publicado com sucesso com o ID 123456789
+          minLength: 1
+          title: Message sent
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        origin:
+          allOf:
+          - $ref: '#/components/schemas/Origin'
+          example:
+            context: portfolios
+            resource: prices
+          title: Processing source application
+        severity:
+          allOf:
+          - $ref: '#/components/schemas/Severity'
+          example: info
+          title: Tracking status
+      required:
+      - id
+      - created_at
+      - code
+      - message
+      - severity
+      - origin
+      title: MinimalTraceOut
+      type: object
+    NotFoundErrorResponse:
+      properties:
+        message:
+          default: Not Found
+          title: Message
+          type: string
+        slug:
+          default: NOT_FOUND
+          title: Slug
+          type: string
+      title: NotFoundErrorResponse
+      type: object
+    Origin:
+      additionalProperties: false
+      properties:
+        context:
+          allOf:
+          - $ref: '#/components/schemas/Context'
+          title: The processing context
+        resource:
+          allOf:
+          - $ref: '#/components/schemas/Resource'
+          title: The resource type of the processing
+      required:
+      - context
+      - resource
+      title: Origin
+      type: object
+    Page:
+      properties:
+        count:
+          minimum: 0.0
+          title: Count
+          type: integer
+        limit:
+          exclusiveMinimum: 0.0
+          title: Limit
+          type: integer
+        max_limit:
+          exclusiveMinimum: 0.0
+          title: Max Limit
+          type: integer
+        offset:
+          minimum: 0.0
+          title: Offset
+          type: integer
+      required:
+      - limit
+      - offset
+      - count
+      - max_limit
+      title: Page
+      type: object
+    Resource:
+      description: An enumeration.
+      enum:
+      - prices
+      - skus
+      - inventories
+      title: Resource
+      type: string
+    ServiceUnavailableErrorResponse:
+      properties:
+        message:
+          default: Service Unavailable
+          title: Message
+          type: string
+        slug:
+          default: SERVICE_UNAVAILABLE
+          title: Slug
+          type: string
+      title: ServiceUnavailableErrorResponse
+      type: object
+    Severity:
+      description: An enumeration.
+      enum:
+      - info
+      - warning
+      - error
+      - critical
+      title: Severity
+      type: string
+    TraceCollectionResponse:
+      example:
+        meta:
+          links: {}
+          page:
+            count: 1
+            limit: 10
+            max_limit: 10
+            offset: 0
+        results:
+        - channel:
+            id: 3f042852-3efc-4d47-97f8-f94989c7b0bc
+          code: ABC123
+          created_at: '2022-06-15T14:25:37Z'
+          extras: {}
+          id: 54675fa4-2541-4f8a-afff-9c1f708333a7
+          message: Publicado com sucesso com o ID 123456789
+          origin:
+            context: portfolios
+            resource: prices
+          reference: https://api.magalu.com/v0/portfolios/prices/630855f0-b586-4726-9c89-741fe35356c6
+          sent_at: '2022-06-15T14:25:37Z'
+          severity: INFO
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          items:
+            $ref: '#/components/schemas/MinimalTraceOut'
+          title: Results
+          type: array
+      required:
+      - meta
+      - results
+      title: TraceCollectionResponse
+      type: object
+    TraceOut:
+      additionalProperties: false
+      properties:
+        channel:
+          allOf:
+          - $ref: '#/components/schemas/Channel'
+          example:
+            id: 3f042852-3efc-4d47-97f8-f94989c7b0bc
+          title: Channel where trace is available
+        code:
+          example: ABC123
+          minLength: 1
+          title: The identifier of the processed object
+          type: string
+        created_at:
+          format: date-time
+          title: Creation date
+          type: string
+        extras:
+          allOf:
+          - $ref: '#/components/schemas/Extras'
+          example: {}
+          title: Extra information about the trace
+        id:
+          format: uuid4
+          title: Identifier id
+          type: string
+        message:
+          example: Publicado com sucesso com o ID 123456789
+          minLength: 1
+          title: Message sent
+          type: string
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/Metadata'
+          default: {}
+          title: Metadata information
+        origin:
+          allOf:
+          - $ref: '#/components/schemas/Origin'
+          example:
+            context: portfolios
+            resource: prices
+          title: Processing source application
+        reference:
+          example: https://api.magalu.com/v0/portfolios/prices/7c00556d-8967-48d1-a7f2-a62b31656c28
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Registration URL of the processed object
+          type: string
+        sent_at:
+          example: '2022-06-15T14:25:37Z'
+          format: date-time
+          title: Date and time of sent notification
+          type: string
+        severity:
+          allOf:
+          - $ref: '#/components/schemas/Severity'
+          example: info
+          title: Tracking status
+      required:
+      - id
+      - created_at
+      - code
+      - message
+      - severity
+      - origin
+      - extras
+      - channel
+      - reference
+      - sent_at
+      title: TraceOut
+      type: object
+    UnauthorizedErrorResponse:
+      properties:
+        message:
+          default: Unauthorized
+          title: Message
+          type: string
+        slug:
+          default: UNAUTHORIZED
+          title: Slug
+          type: string
+      title: UnauthorizedErrorResponse
+      type: object
+    UnprocessableEntityErrorResponse:
+      properties:
+        details:
+          default:
+          - field: condition
+            location: body
+            message: Invalid condition type
+            slug: INVALID_PARAMETER_VALUE
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Unprocessable entity
+          title: Message
+          type: string
+        slug:
+          default: UNPROCESSABLE_ENTITY
+          title: Slug
+          type: string
+      title: UnprocessableEntityErrorResponse
+      type: object
+  securitySchemes:
+    bearerHttpAuthentication:
+      description: Bearer token using a JWT
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /v0/traces:
+    get:
+      description: "Retorna todos os traces dispon\xEDveis.\n\n:::info\n\n    Este\
+        \ endpoint implementa pagina\xE7\xE3o, ordena\xE7\xE3o e filtros. Para saber\
+        \ mais, consulte a [documenta\xE7\xE3o](/docs/development-guide/pagination-filtering-sorting).\n\
+        :::\n\n**Escopo requerido**\n\n| Valor | Descri\xE7\xE3o |\n|---|---|\n| `open:trace:read`\
+        \ | Permite listar os traces |"
+      operationId: traces_v0_get_traces
+      parameters:
+      - in: query
+        name: _limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100.0
+          minimum: 0.0
+          title: ' Limit'
+          type: integer
+      - in: query
+        name: _offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0.0
+          title: ' Offset'
+          type: integer
+      - in: query
+        name: _sort
+        required: false
+        schema:
+          default:
+          - created_at:asc
+          items:
+            type: string
+          title: ' Sort'
+          type: array
+      - in: query
+        name: _fields
+        required: false
+        schema:
+          items:
+            type: string
+          title: ' Fields'
+          type: array
+      - in: query
+        name: code
+        required: false
+        schema:
+          title: Code
+          type: string
+      - in: query
+        name: severity
+        required: false
+        schema:
+          title: Severity
+          type: string
+      - in: query
+        name: origin.context
+        required: false
+        schema:
+          title: Origin.Context
+          type: string
+      - in: query
+        name: origin.resource
+        required: false
+        schema:
+          title: Origin.Resource
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Successful Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayErrorResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutErrorResponse'
+          description: Gateway Timeout
+      security:
+      - bearerHttpAuthentication: []
+      summary: Recuperar uma lista de traces
+      tags:
+      - Traces
+  /v0/traces/{id}:
+    get:
+      description: "Retorna um trace especifico.\n\n\n**Escopo requerido**\n\n| Valor\
+        \ | Descri\xE7\xE3o |\n|---|---|\n| `open:trace:read` | Permite listar os\
+        \ traces |"
+      operationId: traces_v0_get_traces_id
+      security:
+      - bearerHttpAuthentication: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid4
+          title: Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayErrorResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableErrorResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutErrorResponse'
+          description: Gateway Timeout
+      summary: Recuperar um trace
+      tags:
+      - Traces

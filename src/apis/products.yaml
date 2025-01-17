@@ -1,0 +1,3488 @@
+openapi: 3.0.2
+info:
+  title: ps-core-product
+  version: 1.0.0
+servers:
+  - url: https://api.magalu.com
+    description: Default server
+  - url: https://api-sandbox.magalu.com
+    description: Sandbox server
+components:
+  schemas:
+    Attributes:
+      properties:
+        name:
+          maxLength: 20
+          minLength: 1
+          title: Name
+          type: string
+        value:
+          maxLength: 50
+          minLength: 1
+          title: Value
+          type: string
+      required:
+      - value
+      - name
+      title: Attributes
+      type: object
+    AttributesResponse:
+      properties:
+        name:
+          title: Name
+          type: string
+        value:
+          title: Value
+          type: string
+      required:
+      - value
+      - name
+      title: AttributesResponse
+      type: object
+    BadGatewayRequestResponse:
+      properties:
+        message:
+          default: Bad Gateway
+          title: Message
+          type: string
+        slug:
+          default: BAD_GATEWAY
+          title: Slug
+          type: string
+      title: BadGatewayRequestResponse
+      type: object
+    Channel:
+      properties:
+        id:
+          maxLength: 50
+          minLength: 1
+          title: Id
+          type: string
+      required:
+      - id
+      title: Channel
+      type: object
+    Condition:
+      enum:
+      - NEW
+      - USED
+      - REMANUFACTURED
+      title: Condition
+      type: string
+    Datasheet:
+      properties:
+        name:
+          maxLength: 50
+          minLength: 1
+          title: Name
+          type: string
+        value:
+          minLength: 1
+          title: Value
+          type: string
+      required:
+      - value
+      - name
+      title: Datasheet
+      type: object
+    DatasheetResponse:
+      properties:
+        name:
+          title: Name
+          type: string
+        value:
+          title: Value
+          type: string
+      required:
+      - value
+      - name
+      title: DatasheetResponse
+      type: object
+    Dimension:
+      properties:
+        height:
+          $ref: '#/components/schemas/DimensionMeasurement'
+        length:
+          $ref: '#/components/schemas/DimensionMeasurement'
+        name:
+          $ref: '#/components/schemas/DimensionType'
+        weight:
+          $ref: '#/components/schemas/WeightMeasurement'
+        width:
+          $ref: '#/components/schemas/DimensionMeasurement'
+      required:
+      - name
+      - height
+      - width
+      - length
+      - weight
+      title: Dimension
+      type: object
+    DimensionMeasurement:
+      properties:
+        unit:
+          anyOf:
+          - $ref: '#/components/schemas/DimensionUnit'
+          - type: 'null'
+          default: cm
+        value:
+          maximum: 1000000.0
+          minimum: 0.001
+          title: Value
+          type: number
+      required:
+      - value
+      title: DimensionMeasurement
+      type: object
+    DimensionMeasurementResponse:
+      properties:
+        unit:
+          anyOf:
+          - $ref: '#/components/schemas/DimensionUnit'
+          - type: 'null'
+          default: cm
+        value:
+          title: Value
+          type: number
+      required:
+      - value
+      title: DimensionMeasurementResponse
+      type: object
+    DimensionResponse:
+      properties:
+        height:
+          $ref: '#/components/schemas/DimensionMeasurementResponse'
+        length:
+          $ref: '#/components/schemas/DimensionMeasurementResponse'
+        name:
+          $ref: '#/components/schemas/DimensionType'
+        weight:
+          $ref: '#/components/schemas/WeightMeasurementResponse'
+        width:
+          $ref: '#/components/schemas/DimensionMeasurementResponse'
+      required:
+      - name
+      - height
+      - width
+      - length
+      - weight
+      title: DimensionResponse
+      type: object
+    DimensionType:
+      enum:
+      - product
+      - package
+      title: DimensionType
+      type: string
+    DimensionUnit:
+      enum:
+      - cm
+      title: DimensionUnit
+      type: string
+    ErrorLocationType:
+      description: 'Enumeration class representing the possible error location types.
+
+
+        :param header: Represents an error in the header.
+
+        :type header: ErrorLocationType
+
+        :param path: Represents an error in the path.
+
+        :type path: ErrorLocationType
+
+        :param body: Represents an error in the body.
+
+        :type body: ErrorLocationType
+
+        :param query: Represents an error in the query.
+
+        :type query: ErrorLocationType'
+      enum:
+      - header
+      - path
+      - body
+      - query
+      title: ErrorLocationType
+      type: string
+    Errors:
+      properties:
+        action:
+          title: Action
+          type: string
+        approved:
+          default: false
+          title: Approved
+          type: boolean
+        message:
+          title: Message
+          type: string
+        rules:
+          items:
+            $ref: '#/components/schemas/Rules'
+          title: Rules
+          type: array
+        type:
+          title: Type
+          type: string
+      required:
+      - action
+      - message
+      - type
+      - rules
+      title: Errors
+      type: object
+    ExtraData:
+      properties:
+        name:
+          maxLength: 50
+          minLength: 1
+          title: Name
+          type: string
+        value:
+          maxLength: 50
+          minLength: 1
+          title: Value
+          type: string
+      required:
+      - name
+      - value
+      title: ExtraData
+      type: object
+    ExtraDataResponse:
+      properties:
+        name:
+          title: Name
+          type: string
+        value:
+          title: Value
+          type: string
+      required:
+      - name
+      - value
+      title: ExtraDataResponse
+      type: object
+    FieldError:
+      description: 'Represents an error that occurred in a specific field.
+
+
+        :param slug: The error slug found in the field. Can be None.
+
+        :type slug: str, optional
+
+        :param message: The error message.
+
+        :type message: str
+
+        :param location: The error location.
+
+        :type location: ErrorLocationType
+
+        :param field: The error field.
+
+        :type field: str'
+      properties:
+        field:
+          description: Error field
+          title: Field
+          type: string
+        location:
+          $ref: '#/components/schemas/ErrorLocationType'
+          description: Error location
+        message:
+          description: Error message
+          title: Message
+          type: string
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Error slug found in the field
+          title: Slug
+      required:
+      - slug
+      - message
+      - location
+      - field
+      title: FieldError
+      type: object
+    ForbiddenRequestResponse:
+      properties:
+        message:
+          default: Forbidden
+          title: Message
+          type: string
+        slug:
+          default: FORBIDDEN
+          title: Slug
+          type: string
+      title: ForbiddenRequestResponse
+      type: object
+    GatewayTimeoutRequestResponse:
+      properties:
+        message:
+          default: Gateway Timeout
+          title: Message
+          type: string
+        slug:
+          default: GATEWAY_TIMEOUT
+          title: Slug
+          type: string
+      title: GatewayTimeoutRequestResponse
+      type: object
+    GetAttributesResponse:
+      properties:
+        externalCode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalcode
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        normalized_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Normalized Name
+      required:
+      - externalCode
+      - name
+      title: GetAttributesResponse
+      type: object
+    GetTemplateResponse:
+      properties:
+        attributes:
+          anyOf:
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Attributes
+      required:
+      - attributes
+      title: GetTemplateResponse
+      type: object
+    GetValidationResponse:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        created_at:
+          title: Created At
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/Errors'
+          title: Errors
+          type: array
+      required:
+      - channel
+      - errors
+      title: GetValidationResponse
+      type: object
+    Group:
+      properties:
+        id:
+          maxLength: 50
+          minLength: 1
+          title: Id
+          type: string
+        main_variation:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Main Variation
+      required:
+      - id
+      title: Group
+      type: object
+    HealthCheckResponse:
+      properties:
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      title: HealthCheckResponse
+      type: object
+    Identifiers:
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentifiersTypes'
+        value:
+          title: Value
+          type: string
+      required:
+      - value
+      - type
+      title: Identifiers
+      type: object
+    IdentifiersResponse:
+      properties:
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        value:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Value
+      required:
+      - value
+      - type
+      title: IdentifiersResponse
+      type: object
+    IdentifiersTypes:
+      enum:
+      - ean
+      - isbn
+      title: IdentifiersTypes
+      type: string
+    Images:
+      properties:
+        reference:
+          minLength: 10
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/MimeTypeImage'
+          default: image/jpeg
+      required:
+      - reference
+      title: Images
+      type: object
+    ImagesResponse:
+      properties:
+        reference:
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/MimeTypeImage'
+          default: image/jpeg
+      required:
+      - reference
+      title: ImagesResponse
+      type: object
+    InternalServerRequestResponse:
+      properties:
+        message:
+          default: An internal server error occurred. Please try again later.
+          title: Message
+          type: string
+        slug:
+          default: INTERNAL_SERVER_ERROR
+          title: Slug
+          type: string
+      title: InternalServerRequestResponse
+      type: object
+    ListAttributesResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        results:
+          items:
+            $ref: '#/components/schemas/GetAttributesResponse'
+          title: Results
+          type: array
+      required:
+      - meta
+      - results
+      title: ListAttributesResponse
+      type: object
+    ListPriceGetResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/PriceMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/PriceGetResponse'
+          title: Results
+          type: array
+      required:
+      - meta
+      - results
+      title: ListPriceGetResponse
+      type: object
+    ListSkuGetResponse:
+      properties:
+        links:
+          title: Links
+          type: object
+        page:
+          title: Page
+          type: object
+        results:
+          items:
+            $ref: '#/components/schemas/SkuGetResponse'
+          title: Results
+          type: array
+      required:
+      - page
+      - links
+      - results
+      title: ListSkuGetResponse
+      type: object
+    ListStockGetResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/StockMeta'
+        results:
+          items:
+            $ref: '#/components/schemas/StockGetResponse'
+          title: Results
+          type: array
+      required:
+      - meta
+      - results
+      title: ListStockGetResponse
+      type: object
+    MarketplaceURLResponse:
+      properties:
+        channel:
+          title: Channel
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - channel
+      - url
+      title: MarketplaceURLResponse
+      type: object
+    Meta:
+      properties:
+        links:
+          title: Links
+          type: object
+        page:
+          title: Page
+          type: object
+      required:
+      - page
+      - links
+      title: Meta
+      type: object
+    MimeTypeImage:
+      enum:
+      - image/jpeg
+      title: MimeTypeImage
+      type: string
+    Podcast:
+      properties:
+        reference:
+          minLength: 10
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/PodcastType'
+          default: embedded
+      required:
+      - reference
+      title: Podcast
+      type: object
+    PodcastResponse:
+      properties:
+        reference:
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/VideoType'
+          default: embedded
+      required:
+      - reference
+      title: PodcastResponse
+      type: object
+    PodcastType:
+      enum:
+      - embedded
+      title: PodcastType
+      type: string
+    PostValidationRequest:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        created_at:
+          title: Created At
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/Errors'
+          title: Errors
+          type: array
+      required:
+      - channel
+      - errors
+      title: PostValidationRequest
+      type: object
+    PriceGetResponse:
+      properties:
+        channel:
+          anyOf:
+          - $ref: '#/components/schemas/Channel'
+          - type: 'null'
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+        currency:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: BRL
+          title: Currency
+        list_price:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: List Price
+        normalizer:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 100
+          title: Normalizer
+        price:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Price
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+      title: PriceGetResponse
+      type: object
+    PriceMeta:
+      properties:
+        links:
+          title: Links
+          type: object
+        page:
+          title: Page
+          type: object
+      required:
+      - page
+      - links
+      title: PriceMeta
+      type: object
+    PricePatchRequest:
+      properties:
+        channel:
+          anyOf:
+          - $ref: '#/components/schemas/Channel'
+          - type: 'null'
+        currency:
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - BRL
+          - USD
+          title: Currency
+        list_price:
+          anyOf:
+          - maximum: 99999999.0
+            type: integer
+          - type: 'null'
+          title: List Price
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+        normalizer:
+          anyOf:
+          - maximum: 100.0
+            minimum: 100.0
+            type: integer
+          - type: 'null'
+          default: 100
+          title: Normalizer
+        price:
+          anyOf:
+          - maximum: 99999999.0
+            type: integer
+          - type: 'null'
+          title: Price
+      title: PricePatchRequest
+      type: object
+    PriceRequest:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        currency:
+          default: BRL
+          examples:
+          - BRL
+          - USD
+          title: Currency
+          type: string
+        list_price:
+          maximum: 99999999.0
+          title: List Price
+          type: integer
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        normalizer:
+          default: 100
+          maximum: 100.0
+          minimum: 100.0
+          title: Normalizer
+          type: integer
+        price:
+          maximum: 99999999.0
+          title: Price
+          type: integer
+      required:
+      - list_price
+      - price
+      - channel
+      title: PriceRequest
+      type: object
+    ProductFullCreateRequest:
+      additionalProperties: false
+      properties:
+        active:
+          title: Active
+          type: boolean
+        attributes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Attributes'
+            maxItems: 3
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Attributes
+        brand:
+          maxLength: 100
+          minLength: 1
+          title: Brand
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/Channel'
+          maxItems: 1
+          minItems: 1
+          title: Channels
+          type: array
+        condition:
+          anyOf:
+          - $ref: '#/components/schemas/Condition'
+          - type: 'null'
+          default: NEW
+        datasheet:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Datasheet'
+            maxItems: 50
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Datasheet
+        description:
+          maxLength: 7000
+          minLength: 1
+          title: Description
+          type: string
+        dimensions:
+          items:
+            $ref: '#/components/schemas/Dimension'
+          maxItems: 2
+          minItems: 2
+          title: Dimensions
+          type: array
+        extra_data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExtraData'
+            maxItems: 20
+            type: array
+          - type: 'null'
+          title: Extra Data
+        fulfillment:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Fulfillment
+        group:
+          $ref: '#/components/schemas/Group'
+        has_ean:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Has Ean
+        identifiers:
+          items:
+            $ref: '#/components/schemas/Identifiers'
+          maxItems: 10
+          minItems: 0
+          title: Identifiers
+          type: array
+        images:
+          items:
+            $ref: '#/components/schemas/Images'
+          maxItems: 30
+          minItems: 1
+          title: Images
+          type: array
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        origin:
+          $ref: '#/components/schemas/ProductOrigin'
+        perishable:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Perishable
+        podcasts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Podcast'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Podcasts
+        price:
+          $ref: '#/components/schemas/PriceRequest'
+        sku:
+          maxLength: 50
+          minLength: 1
+          title: Sku
+          type: string
+        stock:
+          $ref: '#/components/schemas/StockRequestSeller'
+        title:
+          maxLength: 150
+          minLength: 1
+          title: Title
+          type: string
+        type:
+          $ref: '#/components/schemas/ProductType'
+        videos:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Videos'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Videos
+      required:
+      - title
+      - description
+      - brand
+      - group
+      - channels
+      - identifiers
+      - datasheet
+      - attributes
+      - dimensions
+      - images
+      - videos
+      - active
+      - podcasts
+      - type
+      - origin
+      - extra_data
+      - sku
+      - stock
+      - price
+      title: ProductFullCreateRequest
+      type: object
+    ProductOrigin:
+      enum:
+      - national
+      - imported
+      title: ProductOrigin
+      type: string
+    ProductType:
+      enum:
+      - product
+      - service
+      - digital product
+      title: ProductType
+      type: string
+    Rules:
+      properties:
+        approved:
+          default: false
+          title: Approved
+          type: boolean
+        field:
+          title: Field
+          type: string
+        message:
+          title: Message
+          type: string
+        value:
+          title: Value
+          type: string
+      required:
+      - field
+      - message
+      - value
+      title: Rules
+      type: object
+    ServiceUnavailableRequestResponse:
+      properties:
+        message:
+          default: Service Unavailable
+          title: Message
+          type: string
+        slug:
+          default: SERVICE_UNAVAILABLE
+          title: Slug
+          type: string
+      title: ServiceUnavailableRequestResponse
+      type: object
+    SkuCreateRequest:
+      additionalProperties: false
+      properties:
+        active:
+          title: Active
+          type: boolean
+        attributes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Attributes'
+            maxItems: 3
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Attributes
+        brand:
+          maxLength: 100
+          minLength: 1
+          title: Brand
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/Channel'
+          maxItems: 1
+          minItems: 1
+          title: Channels
+          type: array
+        condition:
+          anyOf:
+          - $ref: '#/components/schemas/Condition'
+          - type: 'null'
+          default: NEW
+        datasheet:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Datasheet'
+            maxItems: 50
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Datasheet
+        description:
+          maxLength: 7000
+          minLength: 1
+          title: Description
+          type: string
+        dimensions:
+          items:
+            $ref: '#/components/schemas/Dimension'
+          maxItems: 2
+          minItems: 2
+          title: Dimensions
+          type: array
+        extra_data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExtraData'
+            maxItems: 20
+            type: array
+          - type: 'null'
+          title: Extra Data
+        fulfillment:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Fulfillment
+        group:
+          $ref: '#/components/schemas/Group'
+        has_ean:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Has Ean
+        identifiers:
+          items:
+            $ref: '#/components/schemas/Identifiers'
+          maxItems: 10
+          minItems: 0
+          title: Identifiers
+          type: array
+        images:
+          items:
+            $ref: '#/components/schemas/Images'
+          maxItems: 30
+          minItems: 1
+          title: Images
+          type: array
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        origin:
+          $ref: '#/components/schemas/ProductOrigin'
+        perishable:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Perishable
+        podcasts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Podcast'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Podcasts
+        sku:
+          maxLength: 50
+          minLength: 1
+          title: Sku
+          type: string
+        title:
+          maxLength: 150
+          minLength: 1
+          title: Title
+          type: string
+        type:
+          $ref: '#/components/schemas/ProductType'
+        videos:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Videos'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Videos
+      required:
+      - title
+      - description
+      - brand
+      - group
+      - channels
+      - identifiers
+      - datasheet
+      - attributes
+      - dimensions
+      - images
+      - videos
+      - active
+      - podcasts
+      - type
+      - origin
+      - extra_data
+      - sku
+      title: SkuCreateRequest
+      type: object
+    SkuGetResponse:
+      properties:
+        active:
+          title: Active
+          type: boolean
+        attributes:
+          items:
+            $ref: '#/components/schemas/AttributesResponse'
+          title: Attributes
+          type: array
+        brand:
+          title: Brand
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/Channel'
+          title: Channels
+          type: array
+        condition:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Condition
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+        creator:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creator
+        datasheet:
+          items:
+            $ref: '#/components/schemas/DatasheetResponse'
+          title: Datasheet
+          type: array
+        description:
+          title: Description
+          type: string
+        dimensions:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DimensionResponse'
+            type: array
+          - type: 'null'
+          title: Dimensions
+        extra_data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExtraDataResponse'
+            type: array
+          - type: 'null'
+          default: []
+          title: Extra Data
+        fulfillment:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Fulfillment
+        group:
+          anyOf:
+          - $ref: '#/components/schemas/Group'
+          - type: 'null'
+        has_ean:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Has Ean
+        identifiers:
+          items:
+            $ref: '#/components/schemas/IdentifiersResponse'
+          title: Identifiers
+          type: array
+        images:
+          items:
+            $ref: '#/components/schemas/ImagesResponse'
+          title: Images
+          type: array
+        perishable:
+          title: Perishable
+          type: boolean
+        podcasts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PodcastResponse'
+            type: array
+          - type: 'null'
+          title: Podcasts
+        sku:
+          title: Sku
+          type: string
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        title:
+          title: Title
+          type: string
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+        updater:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updater
+        url_marketplace:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MarketplaceURLResponse'
+            type: array
+          - type: 'null'
+          default: []
+          title: Url Marketplace
+        videos:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/VideosResponse'
+            type: array
+          - type: 'null'
+          title: Videos
+      required:
+      - sku
+      - title
+      - description
+      - condition
+      - perishable
+      - brand
+      - channels
+      - identifiers
+      - has_ean
+      - datasheet
+      - attributes
+      - images
+      - fulfillment
+      - active
+      - type
+      title: SkuGetResponse
+      type: object
+    SkuPatchRequest:
+      additionalProperties: false
+      properties:
+        active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+        attributes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Attributes'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Attributes
+        brand:
+          anyOf:
+          - maxLength: 100
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Brand
+        channels:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Channel'
+            maxItems: 1
+            minItems: 1
+            type: array
+          - type: 'null'
+          title: Channels
+        condition:
+          anyOf:
+          - $ref: '#/components/schemas/Condition'
+          - type: 'null'
+        datasheet:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Datasheet'
+            maxItems: 50
+            type: array
+          - type: 'null'
+          title: Datasheet
+        description:
+          anyOf:
+          - maxLength: 7000
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Description
+        dimensions:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Dimension'
+            maxItems: 2
+            type: array
+          - type: 'null'
+          title: Dimensions
+        extra_data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExtraData'
+            maxItems: 20
+            type: array
+          - type: 'null'
+          title: Extra Data
+        fulfillment:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Fulfillment
+        group:
+          anyOf:
+          - $ref: '#/components/schemas/Group'
+          - type: 'null'
+        has_ean:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Has Ean
+        identifiers:
+          items:
+            $ref: '#/components/schemas/Identifiers'
+          maxItems: 10
+          minItems: 0
+          title: Identifiers
+          type: array
+        images:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Images'
+            maxItems: 30
+            type: array
+          - type: 'null'
+          title: Images
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+        origin:
+          anyOf:
+          - $ref: '#/components/schemas/ProductOrigin'
+          - type: 'null'
+        perishable:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Perishable
+        podcasts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Podcast'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Podcasts
+        title:
+          anyOf:
+          - maxLength: 150
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Title
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ProductType'
+          - type: 'null'
+        videos:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Videos'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Videos
+      title: SkuPatchRequest
+      type: object
+    SkuStatusEnum:
+      enum:
+      - PUBLISHED
+      - UNPUBLISHED
+      - BLOCKED
+      - UNDER_REVIEW
+      title: SkuStatusEnum
+      type: string
+    SkuStatusRequest:
+      properties:
+        channel:
+          anyOf:
+          - $ref: '#/components/schemas/Channel'
+          - type: 'null'
+        status:
+          $ref: '#/components/schemas/SkuStatusEnum'
+      required:
+      - status
+      title: SkuStatusRequest
+      type: object
+    SkuUpdateRequest:
+      additionalProperties: false
+      properties:
+        active:
+          title: Active
+          type: boolean
+        attributes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Attributes'
+            maxItems: 3
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Attributes
+        brand:
+          maxLength: 100
+          minLength: 1
+          title: Brand
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/Channel'
+          maxItems: 1
+          minItems: 1
+          title: Channels
+          type: array
+        condition:
+          anyOf:
+          - $ref: '#/components/schemas/Condition'
+          - type: 'null'
+          default: NEW
+        datasheet:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Datasheet'
+            maxItems: 50
+            minItems: 0
+            type: array
+          - type: 'null'
+          title: Datasheet
+        description:
+          maxLength: 7000
+          minLength: 1
+          title: Description
+          type: string
+        dimensions:
+          items:
+            $ref: '#/components/schemas/Dimension'
+          maxItems: 2
+          minItems: 2
+          title: Dimensions
+          type: array
+        extra_data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExtraData'
+            maxItems: 20
+            type: array
+          - type: 'null'
+          title: Extra Data
+        fulfillment:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Fulfillment
+        group:
+          $ref: '#/components/schemas/Group'
+        has_ean:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Has Ean
+        identifiers:
+          items:
+            $ref: '#/components/schemas/Identifiers'
+          maxItems: 10
+          minItems: 0
+          title: Identifiers
+          type: array
+        images:
+          items:
+            $ref: '#/components/schemas/Images'
+          maxItems: 30
+          minItems: 1
+          title: Images
+          type: array
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        origin:
+          $ref: '#/components/schemas/ProductOrigin'
+        perishable:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: false
+          title: Perishable
+        podcasts:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Podcast'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Podcasts
+        title:
+          maxLength: 150
+          minLength: 1
+          title: Title
+          type: string
+        type:
+          $ref: '#/components/schemas/ProductType'
+        videos:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Videos'
+            maxItems: 3
+            type: array
+          - type: 'null'
+          title: Videos
+      required:
+      - title
+      - description
+      - brand
+      - group
+      - channels
+      - identifiers
+      - datasheet
+      - attributes
+      - dimensions
+      - images
+      - videos
+      - active
+      - podcasts
+      - type
+      - origin
+      - extra_data
+      title: SkuUpdateRequest
+      type: object
+    StockAvailable:
+      enum:
+      - AVAILABLE
+      title: StockAvailable
+      type: string
+    StockGetResponse:
+      properties:
+        channel:
+          anyOf:
+          - $ref: '#/components/schemas/Channel'
+          - type: 'null'
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+        quantity:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Quantity
+        type:
+          $ref: '#/components/schemas/StockType'
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+      required:
+      - type
+      - quantity
+      title: StockGetResponse
+      type: object
+    StockMeta:
+      properties:
+        links:
+          title: Links
+          type: object
+        page:
+          title: Page
+          type: object
+      required:
+      - page
+      - links
+      title: StockMeta
+      type: object
+    StockPatchRequestSeller:
+      properties:
+        channel:
+          anyOf:
+          - $ref: '#/components/schemas/Channel'
+          - type: 'null'
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        quantity:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Quantity
+        type:
+          $ref: '#/components/schemas/StockAvailable'
+      required:
+      - type
+      title: StockPatchRequestSeller
+      type: object
+    StockPutRequestChannel:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        quantity:
+          title: Quantity
+          type: integer
+        type:
+          $ref: '#/components/schemas/StockReserved'
+      required:
+      - quantity
+      - channel
+      - type
+      title: StockPutRequestChannel
+      type: object
+    StockRequestChannel:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        quantity:
+          title: Quantity
+          type: integer
+        type:
+          $ref: '#/components/schemas/StockReserved'
+      required:
+      - quantity
+      - channel
+      - type
+      title: StockRequestChannel
+      type: object
+    StockRequestSeller:
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+        metadata:
+          additionalProperties:
+            type: string
+          default: {}
+          title: Metadata
+          type: object
+        quantity:
+          title: Quantity
+          type: integer
+        type:
+          $ref: '#/components/schemas/StockAvailable'
+      required:
+      - quantity
+      - channel
+      - type
+      title: StockRequestSeller
+      type: object
+    StockReserved:
+      enum:
+      - RESERVED
+      title: StockReserved
+      type: string
+    StockType:
+      enum:
+      - AVAILABLE
+      - RESERVED
+      title: StockType
+      type: string
+    UnauthorizedRequestResponse:
+      properties:
+        message:
+          default: Unauthorized
+          title: Message
+          type: string
+        slug:
+          default: UNAUTHORIZED
+          title: Slug
+          type: string
+      title: UnauthorizedRequestResponse
+      type: object
+    UnprocessableEntityErrorResponse:
+      properties:
+        details:
+          default:
+          - field: condition
+            location: body
+            message: Invalid condition type
+            slug: INVALID_PARAMETER_VALUE
+          items:
+            $ref: '#/components/schemas/FieldError'
+          title: Details
+          type: array
+        message:
+          default: Unprocessable entity
+          title: Message
+          type: string
+        slug:
+          default: UNPROCESSABLE_ENTITY
+          title: Slug
+          type: string
+      title: UnprocessableEntityErrorResponse
+      type: object
+    VideoType:
+      enum:
+      - embedded
+      title: VideoType
+      type: string
+    Videos:
+      properties:
+        reference:
+          minLength: 10
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/VideoType'
+          default: embedded
+      required:
+      - reference
+      title: Videos
+      type: object
+    VideosResponse:
+      properties:
+        reference:
+          title: Reference
+          type: string
+        type:
+          $ref: '#/components/schemas/VideoType'
+          default: embedded
+      required:
+      - reference
+      title: VideosResponse
+      type: object
+    WeightMeasurement:
+      properties:
+        unit:
+          anyOf:
+          - $ref: '#/components/schemas/WeightUnit'
+          - type: 'null'
+          default: g
+        value:
+          maximum: 1000000.0
+          minimum: 1.0
+          title: Value
+          type: number
+      required:
+      - value
+      title: WeightMeasurement
+      type: object
+    WeightMeasurementResponse:
+      properties:
+        unit:
+          anyOf:
+          - $ref: '#/components/schemas/WeightUnit'
+          - type: 'null'
+          default: g
+        value:
+          title: Value
+          type: number
+      required:
+      - value
+      title: WeightMeasurementResponse
+      type: object
+    WeightUnit:
+      enum:
+      - g
+      title: WeightUnit
+      type: string
+  securitySchemes:
+    HTTPBearer:
+      scheme: bearer
+      type: http
+paths:
+  /channel/v1/portfolios/skus/{sku}/status:
+    patch:
+      operationId: portfolios_v1_channel_patch_sku_status
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkuStatusRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Update
+      tags:
+      - sku (channel)
+  /channel/v1/portfolios/skus/{sku}/validation-info:
+    get:
+      operationId: portfolios_v1_channel_get_sku_validation_info
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValidationResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Sku
+      tags:
+      - sku (channel)
+    post:
+      operationId: portfolios_v1_channel_post_sku_validation_info
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostValidationRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Validation Info
+      tags:
+      - sku (channel)
+  /channel/v1/portfolios/stocks/{sku}:
+    post:
+      operationId: portfolios_v1_channel_post_stocks
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequestChannel'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Reserved Stock
+      tags:
+      - stock (channel)
+    put:
+      operationId: portfolios_v1_channel_put_stocks
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockPutRequestChannel'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Put Reserved Stock
+      tags:
+      - stock (channel)
+  /ping:
+    get:
+      operationId: portfolios_v1_get_ping
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      summary: Ping
+      tags:
+      - healthcheck
+    head:
+      operationId: portfolios_v1_head_ping
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      summary: Ping
+      tags:
+      - healthcheck
+  /seller/v1/portfolios/attributes/department/{department}/product_type/{product_type}:
+    get:
+      operationId: portfolios_v1_seller_get_templates
+      parameters:
+      - in: path
+        name: department
+        required: true
+        schema:
+          title: Department
+          type: string
+      - in: path
+        name: product_type
+        required: true
+        schema:
+          title: Product Type
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTemplateResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Templates
+      tags:
+      - attributes
+  /seller/v1/portfolios/attributes/{attribute_type}:
+    get:
+      operationId: portfolios_v1_seller_list_attributes
+      parameters:
+      - in: path
+        name: attribute_type
+        required: true
+        schema:
+          title: Attribute Type
+          type: string
+      - description: "N\xFAmero da p\xE1gina"
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 0
+          description: "N\xFAmero da p\xE1gina"
+          title: ' Offset'
+      - in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - exclusiveMinimum: 0
+            maximum: 100
+            type: integer
+          - type: 'null'
+          default: 10
+          title: ' Limit'
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAttributesResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: List Attribute
+      tags:
+      - attributes
+  /seller/v1/portfolios/attributes/{attribute_type}/{attribute_normalized_name}:
+    get:
+      operationId: portfolios_v1_seller_get_attributes
+      parameters:
+      - in: path
+        name: attribute_type
+        required: true
+        schema:
+          title: Attribute Type
+          type: string
+      - in: path
+        name: attribute_normalized_name
+        required: true
+        schema:
+          title: Attribute Normalized Name
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAttributesResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Attribute
+      tags:
+      - attributes
+  /seller/v1/portfolios/prices/{sku}:
+    get:
+      operationId: portfolios_v1_get_prices
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPriceGetResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Price
+      tags:
+      - price
+    patch:
+      operationId: portfolios_v1_patch_prices
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricePatchRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Patch Price
+      tags:
+      - price
+    post:
+      description: "Cria um pre\xE7o ..."
+      operationId: portfolios_v1_post_prices
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Price
+      tags:
+      - price
+  /seller/v1/portfolios/products:
+    post:
+      operationId: portfolios_v1_post_products
+      parameters:
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductFullCreateRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Full Product
+      tags:
+      - full-product
+  /seller/v1/portfolios/skus:
+    get:
+      operationId: portfolios_v1_list_skus
+      parameters:
+      - description: "N\xFAmero da p\xE1gina"
+        in: query
+        name: _offset
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: 0
+          description: "N\xFAmero da p\xE1gina"
+          title: ' Offset'
+      - in: query
+        name: _limit
+        required: false
+        schema:
+          anyOf:
+          - exclusiveMinimum: 0
+            maximum: 100
+            type: integer
+          - type: 'null'
+          default: 10
+          title: ' Limit'
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSkuGetResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: List Skus
+      tags:
+      - sku
+    post:
+      operationId: portfolios_v1_post_skus
+      parameters:
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkuCreateRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Sku
+      tags:
+      - sku
+  /seller/v1/portfolios/skus/{sku}:
+    get:
+      operationId: portfolios_v1_get_skus
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkuGetResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Sku
+      tags:
+      - sku
+    patch:
+      operationId: portfolios_v1_patch_skus
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkuPatchRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Update Partial Sku
+      tags:
+      - sku
+    put:
+      operationId: portfolios_v1_put_skus
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkuUpdateRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Update Sku
+      tags:
+      - sku
+  /seller/v1/portfolios/skus/{sku}/validation-info:
+    get:
+      operationId: portfolios_v1_seller_get_sku_validation_info
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValidationResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Sku Validation Info
+      tags:
+      - sku
+  /seller/v1/portfolios/stocks/{sku}:
+    get:
+      operationId: portfolios_v1_get_stocks
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListStockGetResponse'
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Get Stock
+      tags:
+      - stock
+    patch:
+      operationId: portfolios_v1_patch_stocks
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockPatchRequestSeller'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Patch Stock
+      tags:
+      - stock
+    post:
+      operationId: portfolios_v1_post_stocks
+      parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          maxLength: 50
+          title: Sku
+          type: string
+      - in: header
+        name: X-Tenant-Id
+        required: true
+        schema:
+          title: X-Tenant-Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockRequestSeller'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedRequestResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenRequestResponse'
+          description: Forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityErrorResponse'
+          description: Unprocessable Entity
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerRequestResponse'
+          description: Internal Server Error
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayRequestResponse'
+          description: Bad Gateway
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableRequestResponse'
+          description: Service Unavailable
+        '504':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayTimeoutRequestResponse'
+          description: Gateway Timeout
+      security:
+      - HTTPBearer: []
+      summary: Create Stock
+      tags:
+      - stock
