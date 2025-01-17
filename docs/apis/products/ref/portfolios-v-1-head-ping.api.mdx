@@ -1,0 +1,63 @@
+---
+id: portfolios-v-1-head-ping
+title: "Ping"
+description: "Ping"
+sidebar_label: "Ping"
+hide_title: true
+hide_table_of_contents: true
+api: eJytV01z4jgQ/SsqnR3ysbMX30xwJq4ikDImW7sJRQm7wZoRkiPJ2WEo/vuWZNk4wEwtTk7Yovv166dWt7zFogBJNBU8yrCPCyH1UjAq1Pztep4DyeYF5SvsYQmqEFyBwv4W31xdmZ9UcA1cm0dSFIymFujymxLcrKk0hzUxT4U0YTStvJUmurRPmmoG2MeTasXDelOYd6WlibrbmbivJZWQYf+5dpx5jeM9EKbz2xzS77EjuEcRi2+QarwzMBmoVNLC8DPxyjQFpZYlQ43bzsNfrq4/kNYalCIrMI8ZLEnJNPbxlJNS50LSn5DhPe8HZ3uUsYcVK1cHGKNgmtyP4+ifcNDCmBjDU5LVBu3YMbyWoPQ5Ir2jbtX547PVuRNyQbMMeFdp7sZxPxoMwtE5ujRRO4iyZ2wUubn5gCIZaEKZepfQ8xYvKTBzFFPBM2qjepiJChP7eCGyDfb2cuKIvxFGM9TYI5tErRaORk/BMBrMH4M4eAiTMJ4/BcNpiHczD1MNa0egnWQMhQQFXCtEOAIphUQ6JxqJNC2lhAxRjghSBaR0SVNkKfde+Av3CyLJGpnQPkpycM7mHS1Fya2nzsG5oFvC0QLQSHDovXDfMHfOSksPCcuIsAbYpd3GdkuNe2OitGz8agHbjvVa47k3Co3B0L0mmwIaIMu7jVLnXkG4v5WW2DvYbrevh1qHe5RWDd/V74dHYF8Jp4Ga/z0MvFybrmm6OFg+ROfYqyvotQS5affSo6RPxX93jI/Dr/eH9/8fZ8I346Wt/UOTZoWXjNmKPRX0F9V12BKOpknVJ/aUW9pVALODDbHhjrvE3mrgjnRjQqQkmyPd9sOhkMIMIrJggIBrqjfdh8RjPL4NJ5OgPwzn4SiJkr/PGxYtLqGlYtM9b2K086lADNs/P3RdOCldwBHlGiQnDCmQbyDdeaxbVA89MiAKkJYbRFaEcsSIBtnrKnA0SsJ4FAznkzB+CuN5GMfj+ByFI8d3Yul2mD01AKoQqi5V6fuROXRS3z7J0Fei4V/SuSL7wWD+NUjCv4KzCrFPMhe4g0Rt2laYT7+yGO1pCmjKyRuhzFR6V4FMIUW34Xw6Cp6CaGgO7jlCOSYtIh0EO5WOFe7LZwvntgUldA2i1F1FcxU1T6KHcDxNzhHMMXAEOoh1mIIFJyvlpizTeWq+RPDRnHqsvqHWoHNh7nZmJNcD2ceX7hOr6mPKTsJSMmOndaH8y0tS0N6arAgre6lY40P4QaWOa4R2bh75XyjCs4X48TucSWXS4MwMp7SUVG8mZqur3b1Pksc+EAmyqQEj26JaamQ0sa1ClC9F+2OvUBepkHBRSJGVqSkEk3XF4Lp31bsyG18IpdfEVhknFt9p+I5xcz/Q8ENfFoxQey+3yW+dvM/YyjvzcC6UuWLj7XZBFEwl2+3McnUR8p9nHn4jktoj4D/Pdl59czL78R02ZuqkKRSWMWGlne+Hp8Jo1mzzfRgM8G73H5IfT7Y=
+sidebar_class_name: "head api-method"
+info_path: docs/apis/products/ref/ps-core-product
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Ping"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"head"}
+  path={"/ping"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Ping
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"content":{"application/json":{"schema":{"properties":{"status":{"title":"Status","type":"string"}},"required":["status"],"title":"HealthCheckResponse","type":"object"}}},"description":"Successful Response"},"401":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Unauthorized","title":"Message","type":"string"},"slug":{"default":"UNAUTHORIZED","title":"Slug","type":"string"}},"title":"UnauthorizedRequestResponse","type":"object"}}},"description":"Unauthorized"},"403":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Forbidden","title":"Message","type":"string"},"slug":{"default":"FORBIDDEN","title":"Slug","type":"string"}},"title":"ForbiddenRequestResponse","type":"object"}}},"description":"Forbidden"},"422":{"content":{"application/json":{"schema":{"properties":{"details":{"default":[{"field":"condition","location":"body","message":"Invalid condition type","slug":"INVALID_PARAMETER_VALUE"}],"items":{"description":"Represents an error that occurred in a specific field.\n\n:param slug: The error slug found in the field. Can be None.\n:type slug: str, optional\n:param message: The error message.\n:type message: str\n:param location: The error location.\n:type location: ErrorLocationType\n:param field: The error field.\n:type field: str","properties":{"field":{"description":"Error field","title":"Field","type":"string"},"location":{"description":"Error location","enum":["header","path","body","query"],"title":"ErrorLocationType","type":"string"},"message":{"description":"Error message","title":"Message","type":"string"},"slug":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Error slug found in the field","title":"Slug"}},"required":["slug","message","location","field"],"title":"FieldError","type":"object"},"title":"Details","type":"array"},"message":{"default":"Unprocessable entity","title":"Message","type":"string"},"slug":{"default":"UNPROCESSABLE_ENTITY","title":"Slug","type":"string"}},"title":"UnprocessableEntityErrorResponse","type":"object"}}},"description":"Unprocessable Entity"},"500":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"An internal server error occurred. Please try again later.","title":"Message","type":"string"},"slug":{"default":"INTERNAL_SERVER_ERROR","title":"Slug","type":"string"}},"title":"InternalServerRequestResponse","type":"object"}}},"description":"Internal Server Error"},"502":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Bad Gateway","title":"Message","type":"string"},"slug":{"default":"BAD_GATEWAY","title":"Slug","type":"string"}},"title":"BadGatewayRequestResponse","type":"object"}}},"description":"Bad Gateway"},"503":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Service Unavailable","title":"Message","type":"string"},"slug":{"default":"SERVICE_UNAVAILABLE","title":"Slug","type":"string"}},"title":"ServiceUnavailableRequestResponse","type":"object"}}},"description":"Service Unavailable"},"504":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Gateway Timeout","title":"Message","type":"string"},"slug":{"default":"GATEWAY_TIMEOUT","title":"Slug","type":"string"}},"title":"GatewayTimeoutRequestResponse","type":"object"}}},"description":"Gateway Timeout"}}}
+>
+  
+</StatusCodes>
+
+
+      

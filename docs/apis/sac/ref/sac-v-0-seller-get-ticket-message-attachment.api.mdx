@@ -1,0 +1,71 @@
+---
+id: sac-v-0-seller-get-ticket-message-attachment
+title: "Resgata o arquivo anexo a uma mensagem"
+description: "Resgata o arquivo anexo a uma mensagem"
+sidebar_label: "Resgata o arquivo anexo a uma mensagem"
+hide_title: true
+hide_table_of_contents: true
+api: eJztWMFu20YQ/RViTm3AmoqRE2+uHTcumjSw1fYgCMKIHFEbk7v07lKQSvBjgh76If6xYrgUKYpypDZoTjqJXM7OzL5580hNCSonjVYoeRdDCAaj2Wo0M5SmpGcJ2ZkV0SPZWUbGYEIztBajZUbSgg85aszIkjYQTkoQEkLI0S7BB4kZQQjNbhGDD5qeCqEphtDqgnww0ZIyhLAEK2zK1uPa2rtja7vJeclYLWQCVeUf9L9N68QA7535v4mwECnN6utTAtyKlLwPznrf/5QdmFxJQ4b3XI5G/BMpaRnOsIRXwSsIy8oHzPNURHVZgk9GSX7YBquqyoeYTKRFzhYQwpWktfJIsi+NsYLKhzcD91/0CrlmKljhkovJokjrS5SbXxeuwJYyM7SN7Lpv15xczT9RZIGBbVZkkabAQPTTv+Yc11Z5sfJIa8XgNYBe2zUfZiEojQ8G2cJ7PAhmufKeCvIS0qrwBqFu6xiVD6lyIPXjkSwyCCfwVJDe1OSvaTJXMd8tCWPSMN0ve+f+rdZK/7J1fTzfm/ru+e/nvzpcKn/LeFejY/b+PvOHtPTBpEXyddDexSStWIgIXwr/wDGYt10LTdqjTPdAuqm516Xa8mi7gFrj5iQILaZLMgcSumn4/b8i+p9QOiBMPdSMM8ra8NtW3YfxvhGbIZBDAbnnAKY5q5Cr58+piNHJyOuzjJxl5CwjZxk5LiMfOCEsrNLiz/Yz5M1ZP876cdaPs36cqB97f2MuL79aP/jqBdFIVdR7egL7hLSUkIZqWnVHbTtqwA7ITHLgP+ihgrmFso+fN+bVY+Xgc7hQjeVOGX5H/pjj7GqHBxnd4+PgEDsW78bjj0cdDivbbfHcHjYxFBVa2E2N95xQk35nbX5V2CVzdCt/kyn3lMWExwzwniTjJ2um7X/FmgQtespD/VSIlfKw/mOMXpGhl7mNWc1au1Q870jIbjU0hMCNPYLVKHBzCxOU7QCjChqqm6Dspg5V0A1ETFC2w4IK+HR6tR2NFDqFEJbW5iYMAszFRYYJpsVFpDIY6sUCi9R6zkFNvcH+HwzKeK7WX/Lz4ExaP9MO8QfuF9cBL+O+rxw/1paeVY8kvcIImXjo/fzHuKs/JwjNXITvnW9+PdUXt0pnaCEE3sQEEHKhdgl/XRirMtLeA+mViMi7+ngHPjCMLoXXF6OLERM2V8ZmWCfZDGpOLn7vUG1X85s/yFMU/FJ0eJcNMSbgiMGZjGqdrMkBPoS7860tP3i9N5faoQg/6yZKUx+WyliOUJZzNPSbTquKl93bPZxMfVihFjhneCYlxMLwdQzhAlNDg8O0Mgnf3Tfq8L3X1ad/yG2PS/5yWGFa8B348Eib3uiOCfgNA+9g940jd5Wptb35mGLc3fOrKKLc7uzkgR23VasnP73lbsCCadNSa68Ldt8u/UTK0lmMucOqqisF33NOVfUPTu2DyA==
+sidebar_class_name: "get api-method"
+info_path: docs/apis/sac/ref/customer-service-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Resgata o arquivo anexo a uma mensagem"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/seller/v0/tickets/{ticket_id}/messages/{message_id}/attachments/{file_name}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Resgata o arquivo anexo a uma mensagem
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"ticket_id","required":true,"schema":{"title":"Ticket Id","type":"string"}},{"in":"path","name":"message_id","required":true,"schema":{"title":"Message Id","type":"string"}},{"in":"path","name":"file_name","required":true,"schema":{"title":"File Name","type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"content":{"*/*":{},"application/json":{"schema":{}}},"description":"Anexo encontrado"},"400":{"content":{"application/json":{"schema":{"properties":{"details":{"anyOf":[{"items":{"properties":{"ctx":{"anyOf":[{"type":"object"},{"type":"null"}],"description":"Contexto do erro","title":"Ctx"},"field":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Campo que gerou o erro","title":"Field"},"location":{"anyOf":[{"enum":["query","path","body","header"],"type":"string","title":"ErrorLocation"},{"type":"null"}],"description":"Descrição do erro"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Identificação do erro","title":"Slug"}},"required":["message"],"title":"ErrorDetail","type":"object"},"type":"array"},{"type":"null"}],"description":"Detalhes do erro","title":"Details"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"description":"Identificação do erro","title":"Slug","type":"string"}},"required":["slug","message","details"],"title":"ErrorResponse","type":"object"}}},"description":"Requisição inválida"},"401":{"content":{"application/json":{"schema":{"properties":{"details":{"anyOf":[{"items":{"properties":{"ctx":{"anyOf":[{"type":"object"},{"type":"null"}],"description":"Contexto do erro","title":"Ctx"},"field":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Campo que gerou o erro","title":"Field"},"location":{"anyOf":[{"enum":["query","path","body","header"],"type":"string","title":"ErrorLocation"},{"type":"null"}],"description":"Descrição do erro"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Identificação do erro","title":"Slug"}},"required":["message"],"title":"ErrorDetail","type":"object"},"type":"array"},{"type":"null"}],"description":"Detalhes do erro","title":"Details"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"description":"Identificação do erro","title":"Slug","type":"string"}},"required":["slug","message","details"],"title":"ErrorResponse","type":"object"}}},"description":"Não autorizado"},"404":{"content":{"application/json":{"schema":{"properties":{"details":{"anyOf":[{"items":{"properties":{"ctx":{"anyOf":[{"type":"object"},{"type":"null"}],"description":"Contexto do erro","title":"Ctx"},"field":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Campo que gerou o erro","title":"Field"},"location":{"anyOf":[{"enum":["query","path","body","header"],"type":"string","title":"ErrorLocation"},{"type":"null"}],"description":"Descrição do erro"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Identificação do erro","title":"Slug"}},"required":["message"],"title":"ErrorDetail","type":"object"},"type":"array"},{"type":"null"}],"description":"Detalhes do erro","title":"Details"},"message":{"description":"Descrição do erro","title":"Message","type":"string"},"slug":{"description":"Identificação do erro","title":"Slug","type":"string"}},"required":["slug","message","details"],"title":"ErrorResponse","type":"object"}}},"description":"Não encontrado"},"422":{"content":{"application/json":{"schema":{"properties":{"detail":{"items":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"title":"Location","type":"array"},"msg":{"title":"Message","type":"string"},"type":{"title":"Error Type","type":"string"}},"required":["loc","msg","type"],"title":"ValidationError","type":"object"},"title":"Detail","type":"array"}},"title":"HTTPValidationError","type":"object"}}},"description":"Validation Error"}}}
+>
+  
+</StatusCodes>
+
+
+      

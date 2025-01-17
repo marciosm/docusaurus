@@ -1,0 +1,16 @@
+:root>* {
+    --md-primary-fg-color: #0086ff;
+    --md-primary-fg-color--dark: #90030C;
+    --md-primary-bg-color: #ffffff;
+    --md-default-fg-color: #404040;
+    --md-typeset-a-color: #0086FF;
+    --md-text-font: 'magalu-font';
+}
+
+@font-face {
+    font-family: 'magalu-font';
+    src: 
+        url('fonts/MagaluUIText-Regular.ttf')
+        format('truetype')
+    ;
+}

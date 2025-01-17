@@ -1,0 +1,71 @@
+---
+id: sac-v-0-seller-create-event
+title: "Adiciona um evento ao ticket"
+description: "Adiciona um evento ao ticket"
+sidebar_label: "Adiciona um evento ao ticket"
+hide_title: true
+hide_table_of_contents: true
+api: eJylV82O20YMfpUBTy2grLdBT7ptdrfIFi2yiN32YBgCLdH2ZEczyvx41zH0NDn0QfJiBWckW7acpEVvFofkfCQ/cug9mIYsemn0QwU5OCyL7XXhSCmyRWkJPRW0Je0hgwYt1uTJOsjne5AacmjQbyADjTVBDl6WT+QLWUEGlj4GaamC3NtAGbhyQzVCvgcvvWLtWdQWD6ztdw2LnLdSr6FtF8kBOf/GVDu2Ko32jCPfAzaNkmVEPfngjGbZ0X1FrrSy4dPDJfccgkg6whthqSS5JREjlEaL7jInVtbUwm9ITGMOOGzLOfKSXIJRUcSgd+9WMQ9n0LODRAelgCM5RXSLdWMEJ1MoubUkgpdKfsIvf3/5bERDyggnnWeklRGuh9Fn7ZYBtH3G9oBKdUBIhxryOQOuQukLl8pmyQerC6lXphdh8Btj5ScqLK2CrlKU0ajLDIvopdygXlNx4SzZxZ9YVVQVS9RPBZalCfEGp7B4RumlXhdlcN7UZAt6aSIj2PwDlZyPwhJyBTPYopIjN72LjpCNLJ9Cw+7TNypLWO2inKp40lsk1YJLXgVF0UY76eWWigo9FrIi7eVKRjxnZw77KLvUbY0s2UeJuiQ1EFSk5Jbsjm+WflNZfNZ9vs7QUFVEhDFQjOKR/14/pbewpAgdwSI7a5rI5xkzYNQ6I77N6MUbphLzI/HOCC+bJGNH5gradtix8+R0cO1tHAWDyw/t0V1vllxRaE8dcetHgWuMdqmDXl+//k/9fNp/XJ+L/dcDuNB/fRB3bNtmoKR+cuNR8RuLU4JQeIvapZ6EDKSn2o3BxOl30c9lNz2QxzQ1z4feaQmi82Hlo6vYNW9vZvc376bj7B+1YzBHBbQWd/H86IXn9Aj8w52ozmGvjK3RQw4hxNF+AdHlKX7GqdOrL4f2vqPKZWadYp2GsiTnVkGJg1mbwc+v/xfByKNU/OsrRVemPDn9Fy+B1J7WZKFdDCtkEqILRardevhQ/k7O4fpCrx9fgV713lpjxeXJcFYOjiNdlY3a/c9uRhkdHX6LaHcpX+dBDDTezmaP33U4ru7RRCQbVnFUBiv9LuZ7SWjJvvW+uQl+w+O8y2g+X8S+xzWvKhAHlnEwGo03lSyl0ShC3U1CgTwbecpxbshvDK9FjXFpAeJ2h0l6fSbb60lSdZP9YfNpJ9GRi4+K3fbLUrAKcth437h8MsFGXtW4RhWuSlPDOaw7WmFQXiQHkUgj+1cOdbU0L9/yM00qBz+LY/6mzP7E569n8Xw2vImawpsn0iI4qdcCxa9/zY7VZIDQ7Xr8nXxD1v34pR8kbMTl5GZ8f9zz7l+wbhQd96yeu4cLTnabNgPeaob8v+12DTElu5UliZvHB35zyboUw09X11fXbMk1rTFG2W2v32HDSS4Ore3pxU8ahVKz01im/l2Yw2F5217HsRnJAhnkw0W548sigw3TLJ/Dfr9ER39Y1bYs/hh4wcjnC94drMQlRzrfQyUd/64gX6FyNEJ4GIDww/uu738Ux1SeIu+7V+/SihL4CzJ4ot3JYh9H2IawIhtBpPPbdNWrbvD09qO5y1ROFjdlSY3/pu5i0IGP76ZMs2X3Z6BO7LD4zFsaPiesJoYeSR1le1Co14FHZw7JJ5OOt99BBc84Opzkp9nY75PGjPnftsfk8Dcnpm3/AazBrQs=
+sidebar_class_name: "post api-method"
+info_path: docs/apis/sac/ref/customer-service-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Adiciona um evento ao ticket"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/seller/v0/tickets/{ticket_id}/events"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Adiciona um evento ao ticket
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"ticket_id","required":true,"schema":{"title":"Ticket Id","type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"description":"TicketEvent schema to receive creation requests from the Seller","properties":{"code":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Campo para livre utilização pelo sistema do seller","title":"Code"},"type":{"allOf":[{"enum":["product_sent","return_info_sent","authorize_refund","product_received","exchange_product_received","refunded","added_bank_account","sla_waiting_customer_expired","rejection_reason","valid_bank_account","waiting_seller_pickup","seller_already_pickedup","waiting_pickup_schedule","sensitive_data_identified","sensitive_data_saved","return_invoice","cancel_invoice","delivery","withdrawn_product","waiting_picked_up","validating_return_invoice","waiting_refund_release"],"title":"TicketEventType","type":"string"}],"description":"Texto do enum para o tipo do evento."}},"required":["type"],"title":"CreateTicketEventSeller","type":"object"}}},"required":true}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"202":{"content":{"application/json":{"schema":{"properties":{"data":{"anyOf":[{"type":"object"},{"type":"null"}],"title":"Data"},"links":{"description":"Links para a transação","items":{"properties":{"path":{"description":"Link para a transação","title":"Path","type":"string"}},"required":["path"],"title":"TransactionHATEAOS","type":"object"},"title":"Links","type":"array"},"transaction_id":{"description":"ID da transação","format":"uuid","title":"Transaction Id","type":"string"}},"required":["transaction_id"],"title":"TransactionResponse","type":"object"}}},"description":"Successful Response"},"422":{"content":{"application/json":{"schema":{"properties":{"detail":{"items":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"title":"Location","type":"array"},"msg":{"title":"Message","type":"string"},"type":{"title":"Error Type","type":"string"}},"required":["loc","msg","type"],"title":"ValidationError","type":"object"},"title":"Detail","type":"array"}},"title":"HTTPValidationError","type":"object"}}},"description":"Validation Error"}}}
+>
+  
+</StatusCodes>
+
+
+      

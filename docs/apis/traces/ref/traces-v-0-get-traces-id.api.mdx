@@ -1,0 +1,78 @@
+---
+id: traces-v-0-get-traces-id
+title: "Recuperar um trace"
+description: "Retorna um trace especifico."
+sidebar_label: "Recuperar um trace"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNV82S2kYQfpWpPiVb2gU7zkU3rdHapNbgEmJdCabwIDUwtqRRZkbYRKunySEP4hdL9Uj8LKxdEd5DiqKQUE/319986ukuIUYdKZEbITNwIUAjVcZZkTKjeIQMdY6RWIhIXr3P6HNx4etI5pIp/LNAJWJ5cUH/37M7nkjF7lnPevz6z9e/Jbt/n91fXl7aL9l8kDlmrnXtKuTxB3bP3qJKhUGWCG24YlLXoTW7BwdkjooTuH4MLtQPZuvubIlm1tyJGBzQGBVKmA24kxLmyBWq18bkXmFWmBkR8TrBybSaOpBzxVM0qLQ1F5R5zs0KHMh4iuCC9UkZCoUxuEYV6ICOVphycEtYSJVyAy4UhYhfgANGmITW9Wmd2eR0rY0S2RIqiqhQ5zLTqGn1826XfiKZGcwMXfI8TxqMnY+agJYH0Y79Vc7Rro2KKEKtF0XCgiYQVA686D5rFSdXxLYRNcoUteZLpMsYF7xIKN9xxguzkkr8hfFB2m8a25PcHdBJsTzyMfDG4eth0P/D7x34GJHhKXl7g8PYvlJS7XLdrZLzjxiZxyh6ANxy88tTc3Mj1VzEMWbnEnMzDK77vZ4/aMPKLmprSvZ4LR8vnpqPgTTsRhbZ2UIZDMPZzXA8aKWSgTQ2aGs69nCJjufPf4COGA0XiX6QzaSEhcCEqlgks1jYqA4kcluaYC7jDTh7LqGfrXkiYrazZzaJLVXQH9x5t/3e7K0XeG/80A9md97t2AcqOMJgqk+RNRDKo9wtWax+eCCt7f3xVu1Bl8CTZLiw6T106WUMsyJtqvcVOEC34E5ghTxGBc625DZ502mygek+vAV124QK68yPoEyPN7FOZIevch5K89Q03QuyjURPHdEztiD9MJExs8ITOr8p3f05M4E9nl0STrNr06OdsXFPlb236jUy3JlwpfjmhJR9bc+VpHOEzxNkdGqazfk1/m0wfOmPRt71rT/zB2E//L1drT/A4lsoZ5T8w3xqJ4T215bH738odf3MoMp4wkao1qjYbmvO4a4/CP1g4N3ORn5w5wczPwiGQRvytmhqMK15ezwZS9yPFMVHibvmMXvFDX7mZ0vt2uvNXnmh/85rpbBrHjeBWxN0CNrS8uStBDEvImTjjK+5SEjA59JDIuq/9GfjgXfn9W/pfWxDU4PkAEhruh5LxtL25B1HsyksFCnKwpxLWaOmWdh/4w/HYRu6GgQNgNZUHSdgXfMljSkQ2mmHToEUzUpSI7FEsz1GXeisu516IuqUIq7sTETvbz3jFCoBF1bG5NrtdHgurlK+5ElxFckUjmH0aipY7QAq55H1l5pn8Vx++Z6fUW2y8zPdz2kj2td6K789rR2ftNfWkhn5CTNWaJEtGWe/vQv31BJAaCY1uq99U5NhL262cxstInJFtpB2xGr2ryHZASKuDvrsqnvVJaHkUpuUW1jNlBhgVNB8qnbz8jEFB/r+/83WDWcGv5hOnnBh+yW70WUjqgmsu2S4ZcUVtg1ZSU0dLZTlnGscq6Sq6O+6g3MnUwfWXAn7otvGUNgjOAZ3wRON36Hop6BphX5m38K3bWUyOjDWPCnoDhz4hJt6bq+mlbPtMSl6/cCLIszNwZKTYlMdvlmvfBIVjYwHA/iRmKz3R+GUZW0RklCraofOCpcAVtW/eZwBPA==
+sidebar_class_name: "get api-method"
+info_path: docs/apis/traces/ref/traces
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Recuperar um trace"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v0/traces/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retorna um trace especifico.
+
+
+**Escopo requerido**
+
+| Valor | Descrição |
+|---|---|
+| `open:trace:read` | Permite listar os traces |
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"in":"path","name":"id","required":true,"schema":{"format":"uuid4","title":"Id","type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"content":{"application/json":{"schema":{"type":"string"}}},"description":"Successful Response"},"401":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Unauthorized","title":"Message","type":"string"},"slug":{"default":"UNAUTHORIZED","title":"Slug","type":"string"}},"title":"UnauthorizedErrorResponse","type":"object"}}},"description":"Unauthorized"},"403":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Forbidden","title":"Message","type":"string"},"slug":{"default":"FORBIDDEN","title":"Slug","type":"string"}},"title":"ForbiddenErrorResponse","type":"object"}}},"description":"Forbidden"},"404":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Not Found","title":"Message","type":"string"},"slug":{"default":"NOT_FOUND","title":"Slug","type":"string"}},"title":"NotFoundErrorResponse","type":"object"}}},"description":"Not Found"},"422":{"content":{"application/json":{"schema":{"properties":{"details":{"default":[{"field":"condition","location":"body","message":"Invalid condition type","slug":"INVALID_PARAMETER_VALUE"}],"items":{"properties":{"field":{"description":"Error field","title":"Field","type":"string"},"location":{"allOf":[{"description":"An enumeration.","enum":["header","path","body","query"],"title":"ErrorLocationType","type":"string"}],"description":"Error location"},"message":{"description":"Error message","title":"Message","type":"string"},"slug":{"description":"Error slug found in the field","title":"Slug","type":"string"}},"required":["message","location","field"],"title":"FieldError","type":"object"},"title":"Details","type":"array"},"message":{"default":"Unprocessable entity","title":"Message","type":"string"},"slug":{"default":"UNPROCESSABLE_ENTITY","title":"Slug","type":"string"}},"title":"UnprocessableEntityErrorResponse","type":"object"}}},"description":"Unprocessable Entity"},"500":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Internal Server Error","title":"Message","type":"string"},"slug":{"default":"INTERNAL_SERVER_ERROR","title":"Slug","type":"string"}},"title":"InternalServerErrorResponse","type":"object"}}},"description":"Internal Server Error"},"502":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Bad Gateway","title":"Message","type":"string"},"slug":{"default":"BAD_GATEWAY","title":"Slug","type":"string"}},"title":"BadGatewayErrorResponse","type":"object"}}},"description":"Bad Gateway"},"503":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Service Unavailable","title":"Message","type":"string"},"slug":{"default":"SERVICE_UNAVAILABLE","title":"Slug","type":"string"}},"title":"ServiceUnavailableErrorResponse","type":"object"}}},"description":"Service Unavailable"},"504":{"content":{"application/json":{"schema":{"properties":{"message":{"default":"Gateway Timeout","title":"Message","type":"string"},"slug":{"default":"GATEWAY_TIMEOUT","title":"Slug","type":"string"}},"title":"GatewayTimeoutErrorResponse","type":"object"}}},"description":"Gateway Timeout"}}}
+>
+  
+</StatusCodes>
+
+
+      
