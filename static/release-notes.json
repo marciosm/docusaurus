@@ -1,0 +1,38 @@
+[
+  {
+    "date": "2024-12-01",
+    "productName": "SAC (Atendimento)",
+    "description": "Uma descrição curta",
+    "longDescription": "Criação de tickets/protocolos criados no marketplace Magalu; Criação e leitura de anexos de mensagens criadas no marketplace Magalu para os tickets/protocolos do seller; Criação e leitura de eventos dos tickets/protocolos do seller; Criação e leitura de códigos de reversa para o cliente final.",
+    "category": "Feature",
+    "link": "/docs/apis/products/overview"
+  },
+  {
+    "date": "2024-10-23",
+    "productName": "Product",
+    "description": "Teste Changed.",
+    "longDescription": "Teste sem link.",
+    "category": "Changed"
+  },
+  {
+    "date": "2024-10-23",
+    "productName": "Product",
+    "description": "Teste Announcement.",
+    "longDescription": "Teste sem link.",
+    "category": "Announcement"
+  },
+  {
+    "date": "2024-10-23",
+    "productName": "Product",
+    "description": "Teste Fixed.",
+    "longDescription": "Teste sem link.",
+    "category": "Fixed"
+  },
+  {
+    "date": "2024-10-23",
+    "productName": "Product",
+    "description": "Teste Generico.",
+    "longDescription": "Teste sem link.",
+    "category": "Outra categoria"
+  }
+]
