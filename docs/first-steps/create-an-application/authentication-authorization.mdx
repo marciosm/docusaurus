@@ -1,0 +1,123 @@
+# Autenticação e autorização
+
+import envs from "@site/static/envs.json"
+
+O processo de autenticação para as APIs segue o protocolo oAuth 2.0, via fluxo _Authorization Code_. Nesse fluxo, sua aplicação terá acesso às informações de usuários através da autorização dos mesmos. Caso você não possua as credenciais `client_id` e `client_secret` de uma aplicação cliente, será necessário criar sua aplicação (vide seção [Como criar sua aplicação](create-application.mdx)).
+
+## Vídeo de instruções para autenticação
+<div class="text--center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/U8Ic-NI3I6c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+## Tabela de variáveis
+
+    | Campo | Tipo | Descrição | Obrigatório |
+    |-------------|--------|----|---------------|
+    | `CLIENT_ID` | string | ID público da aplicação cliente no IdMagalu | _Sim_ |
+    | `CLIENT_SECRET` | string | Segredo da aplicação cliente no IdMagalu | _Sim_ |
+    | `REDIRECT_URI` | string | URL de redirecionamento do cliente, que receberá o código de autorização (`AUTHORIZATION_CODE`) | _Sim_ |
+    | `SCOPES` | string | Escopos de consentimento. Exemplo: `scope_1 scope_2 scope_3` | _Sim_ |
+    | `AUTHORIZATION_CODE` | string | Código de autorização (`code`) do usuário retornado na `REDIRECT_URI` | _Sim_ |
+    | `ACCESS_TOKEN` | string | Token JWT de acesso às APIs da plataforma | _Sim_ |
+    | `REFRESH_TOKEN` | string | Token JWT do fluxo de refresh | _Sim_ |
+    | `TOKEN_TYPE` | string | Tipo do token. Exemplo: `Bearer` | _Sim_ |
+    | `EXPIRES_IN` | integer | Expiração dos tokens JWT | _Sim_ |
+    | `CREATED_AT` | timestamp | Data de criação dos tokens JWT | _Sim_ |
+
+## Obtenção do token
+
+### Passo 1: identificação da loja
+
+Redirecione o usuário para o IdMagalu a partir de uma URL com a seguinte estrutura:
+
+```urlencoded
+https://id.magalu.com/login?client_id=<CLIENT_ID>&redirect_uri=<REDIRECT_URI>&scope=<SCOPES>&response_type=code&choose_tenants=true
+```
+
+_Exemplo de chamada:_
+
+```urlencoded
+https://id.magalu.com/login?client_id=fSbG5kB3iv5x9sLioaweMSaw3Qhb5xlTC3JpxGFdpd0&redirect_uri=http://localhost:3000/redirect&scope=open:portfolio:read open:order-order:read&response_type=code&choose_tenants=true
+```
+
+A tela de login do IdMagalu aparecerá para o usuário, ele deverá logar com as credenciais da loja:
+
+<div class="text--center">
+    ![Imagem Login IdMagalu](/img/id-magalu-login.png)
+</div>
+
+### Passo 2: O usuário concederá permissão para que a aplicação acesse suas informações
+
+Se houver permissões para serem concedidas, a seguinte tela aparecerá para o usuário:
+
+<div class="text--center">
+    ![Imagem Permissões de Acesso](/img/agreement-id-magalu.png)
+</div>
+
+:::info
+    Caso as permissões já tenham sido concedidas em algum momento, esta tela não será exibida ao usuário.
+:::
+
+Após realizar login e dar permissões, o usuário será redirecionado para a REDIRECT_URI, onde virá o código de autorização (`code`). Segue abaixo um exemplo de como localizar este código de autorização diretamente na barra de endereços do navegador:
+
+<div class="text--center">
+    ![Imagem Code](/img/authorization-code.png)
+</div>
+
+### Passo 3: A partir do código de autorização concedido pelo usuário, crie um token de acesso às APIs da plataforma
+
+_Chamada_:
+
+```shell
+curl --location --request POST 'https://id.magalu.com/oauth/token' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "client_id": "<CLIENT_ID>",
+    "client_secret": "<CLIENT_SECRET>",
+    "redirect_uri": "<REDIRECT_URI>",
+    "code": "<AUTHORIZATION_CODE>",
+    "grant_type": "authorization_code"
+}
+'
+```
+
+_Resposta_:
+
+```json
+{
+    "access_token": "<ACCESS_TOKEN>",
+    "token_type": "<TOKEN_TYPE>",
+    "expires_in": "<EXPIRES_IN>",
+    "refresh_token": "<REFRESH_TOKEN>",
+    "scope": "<SCOPES>",
+    "created_at": "<CREATED_AT>"
+}
+```
+
+
+## Renovação do token
+Para realizar o processo de renovação do token (`refresh_token`), execute a seguinte chamada:
+
+_Chamada_:
+
+```shell
+curl --location 'https://id.magalu.com/oauth/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=<REFRESH_TOKEN>' \
+--data-urlencode 'client_id=<CLIENT_ID>' \
+--data-urlencode 'client_secret=<CLIENT_ID>' \
+--data-urlencode 'refresh_token=<REFRESH_TOKEN>'
+```
+
+_Resposta_:
+
+```json
+{
+    "access_token": "<ACCESS_TOKEN>",
+    "token_type": "<TOKEN_TYPE>",
+    "expires_in": "<EXPIRES_IN>",
+    "refresh_token": "<REFRESH_TOKEN>",
+    "scope": "<SCOPES>",
+    "created_at": "<CREATED_AT>"
+}
+```

@@ -1,0 +1,110 @@
+---
+sidebar_position: 1
+---
+
+# Como criar sua aplicação
+
+import envs from "@site/static/envs.json"
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+## Vídeo de instruções para criação de credenciais
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EXBm1YnDygg?si=7jXEdLIz7gyc7Tq3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+## Passo a passo para criação do seu client:
+
+### Passo 1: Cadastre sua conta.
+
+Crie uma conta com o IdMagalu neste [link](https://id.magalu.com).
+
+:::tip
+    Caso já tenha uma conta no SuperApp do Magalu ou no Portal do Seller, poderá utilizar o mesmo login e senha; caso contrário, realize seu cadastro!
+
+:::
+
+### Passo 2: Download do IDM
+
+Realizar download do arquivo de acordo com o sistema operacional na página [Releases].
+
+### Passo 3: Tornar o arquivo executável *(opcional)*###
+
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">
+    Tornar o arquivo executável de qualquer lugar movendo para a pasta `C:\Windows\System32`.
+
+    :::warning
+        Evite usar o `CMD`, sempre utilize o Powershell para executar os comandos e use aspas duplas ao invés de aspas simples.
+    :::
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+    Tornar o arquivo executável
+    ```shell
+    chmod +x idm
+    ```
+   </TabItem>
+
+  <TabItem value="mac" label="macOS">
+  
+    Tornar o arquivo executável
+    ```shell
+    chmod +x idm
+    ```
+
+    Permitir a execução do app não baixado pela App Store:
+
+    ![Configura IDM no MacOS](/img/macos-setup-idm.png)  
+
+  </TabItem>
+</Tabs>
+
+### Passo 4: Fazer o login
+
+Faça o login em sua conta no ID Magalu através do comando:
+
+```shell
+idm login
+```
+
+### Passo 5: Criar client
+
+#### Tabela de variáveis
+
+| Campo  | Descrição |
+|-------------|---------------|
+| `name` | Nome da sua aplicação |
+| `description` | Uma descrição sobre a aplicação. |
+| `terms-of-use` | O URL que leva aos termos de uso. |
+| `privacy-term` | O URL para a política de privacidade. |
+| `icon` | URL do ícone da aplicação. |
+| `redirect-uris` | Uma lista de URLs de redirecionamento para onde os usuários serão enviados após a autorização bem-sucedida. Deve ser separado por espaços. |
+| `scopes` | A lista de escopos de acesso, para adicionar mais de um escopo devem ser separados por espaço. Os escopos podem ser encontrados nas documentações próprias das APIs. Exemplo de escopo: `open:order-order:read` |
+| `reason` | Uma explicação do motivo pelo qual a aplicação precisa dos escopos especificados, geralmente relacionado à interface do usuário ou funcionalidade. |
+| `audience` | O ambiente que será utilizado (somente deverá ser passado 1 valor). |
+| `access-token-exp` | O tempo de vida do token de acesso em segundos. Maximo é __7200__. |
+| `always-require-login` | Ignorar a sessão ativa do Magalu ID e sempre exigir login (recomendado utilizar `false`) |
+
+#### Comando
+Execute o comando:
+```shell
+idm client create --name "client-name" --description "Client Description" --terms-of-use "http://terms.com.br" --privacy-term "http://term.com.br" --icon "http://icon.com/icon.png" --redirect-uris "https://redirect1.com https://redirect2.com" --scopes "open:portfolio:write open:portfolio:read open:order-order:read" --reason "Scopes needed by UI to" --audience "https://api-sandbox.magalu.com" --access-token-exp 7200 --always-require-login false
+```
+
+## Outras ações
+
+### Adicionar um scope a um client já existente
+
+Para adicionar um scope a um cliente que já existe, execute o comando:
+
+```shell
+idm client add-scope --client-uuid "XXXXXX-XXXf-4XX2-8XXa9-37cXXXXXXd09" --scopes "scope-x scope-y" --reason "My client needs this scope because"
+```
+
+### Listar clients 
+
+Para listas os clients criados na sua conta, execute o comando:
+
+```shell
+idm client list
+```
+
